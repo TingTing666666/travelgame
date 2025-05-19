@@ -109,6 +109,7 @@ body {
     background-color: #d0d0d0;
     transform: scale(1.1);
 }
+
 .step.active {
     background-color: #1DE29A;
     color: white;
@@ -172,6 +173,7 @@ body {
 .option-card.selected {
     border-color: #1DE29A;
     box-shadow: 0 5px 15px rgba(29, 226, 154, 0.2);
+    background-color: #f0fdf8;
 }
 
 .option-icon {
@@ -203,43 +205,73 @@ body {
     padding: 0 20px;
 }
 
+/* iOS风格按钮样式 */
 .nav-btn {
     padding: 12px 30px;
     border: none;
-    border-radius: 30px;
+    border-radius: 40px; /* iOS风格圆角 */
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.nav-btn:disabled {
-    background-color: #e0e0e0;
-    color: #999;
+/* 按钮悬停和点击效果 */
+.nav-btn:not(:disabled):hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.nav-btn:not(:disabled):active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 禁用按钮样式 */
+.nav-btn:disabled,
+.nav-btn.disabled {
+    opacity: 0.5;
     cursor: not-allowed;
+    background-color: #999999 !important; /* 使用!important确保优先级 */
+    color: #ffffff !important;
+    box-shadow: none;
+    transform: none !important;
 }
 
+/* 上一步按钮样式 */
 #prev-btn {
-    background-color: #f0f0f0;
-    color: #555;
+    background-color: rgba(142, 142, 147, 0.76); /* iOS灰色 */
+    color: white;
 }
 
 #prev-btn:not(:disabled):hover {
-    background-color: #e0e0e0;
-    transform: translateX(-3px);
+    background-color: #76767B; /* 深灰色 */
 }
 
-#next-btn,
-.submit-btn {
-    background-color: #1DE29A;
+/* 下一步按钮样式 */
+#next-btn {
+    background-color: #1DE29A; /* iOS蓝色 */
     color: white;
-    box-shadow: 0 3px 10px rgba(29, 226, 154, 0.3);
 }
 
-#next-btn:hover,
-.submit-btn:hover {
-    background-color: #19c688;
-    transform: translateX(3px);
+#next-btn:not(:disabled):hover {
+    background-color: #19b07a; /* 深蓝色 */
+}
+
+/* 提交按钮特殊样式 */
+.submit-btn {
+    background-color: #1DE29A; /* iOS绿色 */
+    color: white;
+}
+
+.submit-btn:not(:disabled):hover {
+    background-color: #19b07a; /* 深绿色 */
+}
+
+/* 隐藏元素 */
+.hidden {
+    display: none !important;
 }
 
 .selection-hint {
@@ -247,11 +279,6 @@ body {
     color: #666;
     margin-bottom: 20px;
     font-size: 14px;
-}
-.option-card.selected {
-    border-color: #1DE29A;
-    box-shadow: 0 5px 15px rgba(29, 226, 154, 0.2);
-    background-color: #f0fdf8;
 }
 
 /* Responsive adjustments */

@@ -19,13 +19,6 @@ class AvatarCreator {
             facial_hair: this.initialComponents.facial_hair,
             accessories: this.initialComponents.accessories
         };
-        this.currentSelection = {
-            body: null,
-            head: null,
-            face: null,
-            facial_hair: null,
-            accessories: null
-        };
         this.svgCache = {}; // 缓存加载的SVG内容
 
         // 添加组件位置信息

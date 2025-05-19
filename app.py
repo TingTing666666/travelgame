@@ -4,12 +4,24 @@ import json
 import pandas as pd
 import numpy as np
 import os
+import pickle
+import base64
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)  # 导入 os 模块并使用 urandom 生成密钥
+app.secret_key = 'dev-secret-key-for-testing'
 app.config['SESSION_COOKIE_SECURE'] = False  # 开发环境设为False
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = 3600  # 会话持续时间（秒）
+
+# 会话数据序列化函数
+def serialize_session_data(data):
+    return base64.b64encode(pickle.dumps(data)).decode('utf-8')
+
+def deserialize_session_data(data_str):
+    try:
+        return pickle.loads(base64.b64decode(data_str.encode('utf-8')))
+    except:
+        return None
 
 @app.route('/')
 def home():
@@ -43,32 +55,59 @@ def create_avatar():
 def save_avatar():
     """保存角色信息"""
     if request.method == 'POST':
-        data = request.json
+        try:
+            data = request.json
 
-        # 存储用户名
-        session['name'] = data.get('name')
+            # 存储用户名
+            session['name'] = data.get('name')
 
-        # 存储用户选择的组件，而非整个SVG
-        if 'selections' in data:
-            session['avatar_selections'] = data.get('selections')
+            # 序列化存储选择数据
+            if 'selections' in data:
+                selections_data = data.get('selections')
+                session['avatar_selections'] = selections_data
+                # 备份为字符串以防对象存储失败
+                session['avatar_selections_backup'] = serialize_session_data(selections_data)
 
-        # 强制更新session
-        session.modified = True
+            # 强制更新session
+            session.modified = True
 
-        print(f"Session updated: name={session.get('name')}, selections={session.get('avatar_selections')}")
-
-        return jsonify({"success": True})
+            print(f"Session updated: name={session.get('name')}")
+            return jsonify({"success": True})
+        except Exception as e:
+            print(f"保存头像出错: {str(e)}")
+            return jsonify({"success": False, "error": str(e)})
 
 
 @app.route('/questionnaire')
 def questionnaire():
     """问卷调查页面"""
     print("=== /questionnaire 路由被调用 ===")
-    print(f"Session内容: name={session.get('name')}, selections={session.get('avatar_selections')}")
 
+    # 检查会话数据
     if 'name' not in session:
         print("session中没有找到name，重定向到create_avatar")
         return redirect(url_for('create_avatar'))
+
+    # 尝试获取头像选择
+    avatar_selections = None
+
+    # 首先尝试直接获取
+    if 'avatar_selections' in session:
+        avatar_selections = session.get('avatar_selections')
+
+    # 如果获取失败，尝试从备份恢复
+    if not avatar_selections and 'avatar_selections_backup' in session:
+        backup_data = session.get('avatar_selections_backup')
+        avatar_selections = deserialize_session_data(backup_data)
+
+        # 恢复成功后更新会话
+        if avatar_selections:
+            session['avatar_selections'] = avatar_selections
+            session.modified = True
+
+    # 如果仍然失败，使用默认值
+    if not avatar_selections:
+        avatar_selections = {}
 
     # 问卷选项
     questions = {
@@ -79,9 +118,6 @@ def questionnaire():
         'budget': ['$0-$5000', '$5000-$10000', '$10000-$50000', '$50000+'],
         'duration': ['1 day', '3 days', '7 days', '14 days', '30+ days']
     }
-
-    # 获取头像选择项
-    avatar_selections = session.get('avatar_selections', {})
 
     return render_template('questionnaire.html',
                            name=session['name'],
@@ -511,6 +547,17 @@ def calculate_top_destinations(province_scores):
                 'match': 75
             }
         ]
+
+@app.route('/clear_session')
+def clear_session():
+    """清除会话数据"""
+    session.clear()
+    return redirect(url_for('home'))
+
+@app.route('/debug_session')
+def debug_session():
+    """调试会话数据"""
+    return jsonify(dict(session))
 
 if __name__ == '__main__':
     app.run(debug=True)

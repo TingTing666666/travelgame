@@ -34,16 +34,16 @@ document.addEventListener('DOMContentLoaded', function () {
         step.style.cursor = 'pointer';
 
         // 添加明确的点击效果
-        step.addEventListener('mousedown', function() {
+        step.addEventListener('mousedown', function () {
             this.style.transform = 'scale(0.95)';
         });
 
-        step.addEventListener('mouseup', function() {
+        step.addEventListener('mouseup', function () {
             this.style.transform = 'scale(1)';
         });
 
         // 主要点击事件
-        step.addEventListener('click', function(event) {
+        step.addEventListener('click', function (event) {
             console.log(`点击了步骤 ${index + 1}`);
             event.preventDefault(); // 防止默认行为
 
@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // Option selection
     // Option selection
     document.querySelectorAll('.option-card').forEach(option => {
         option.addEventListener('click', function () {
@@ -90,15 +91,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 userSelections[category].push(value);
             }
 
-            // 启用下一步按钮，只要有至少一个选择
-            nextBtn.disabled = userSelections[category].length === 0;
-
-            // 如果是最后一个问题，也更新提交按钮状态
-            if (currentQuestion === totalQuestions) {
-                submitBtn.disabled = userSelections[category].length === 0;
-            }
+            // 每次选择变化时更新按钮状态
+            updateButtonStates(category);
         });
     });
+
+// 添加一个新函数专门用于更新按钮状态
+    function updateButtonStates(category) {
+        // 检查是否有选择
+        const hasSelections = userSelections[category] && userSelections[category].length > 0;
+
+        if (currentQuestion === totalQuestions) {
+            // 最后一题：更新提交按钮
+            submitBtn.disabled = !hasSelections;
+            if (!hasSelections) {
+                submitBtn.classList.add('disabled');
+            } else {
+                submitBtn.classList.remove('disabled');
+            }
+        } else {
+            // 非最后一题：更新Next按钮
+            nextBtn.disabled = !hasSelections;
+            if (!hasSelections) {
+                nextBtn.classList.add('disabled');
+            } else {
+                nextBtn.classList.remove('disabled');
+            }
+        }
+    }
 
     // Previous button click
     prevBtn.addEventListener('click', function () {
@@ -111,7 +131,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Next button click
     nextBtn.addEventListener('click', function () {
         if (currentQuestion < totalQuestions) {
-            // 检查用户是否至少选择了一个选项
+            // 修改这里：检查用户是否至少选择了一个选项，但只在前5题执行
             const category = getQuestionCategory(currentQuestion);
             if (userSelections[category].length === 0) {
                 alert('Please select at least one option to continue');
@@ -142,90 +162,110 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: JSON.stringify(userSelections),
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                window.location.href = '/results';
-            } else {
-                alert('Error processing your preferences. Please try again.');
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        });
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/results';
+                } else {
+                    alert('Error processing your preferences. Please try again.');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
     });
 
-    // 更新 updateQuestionView 函数
-    function updateQuestionView() {
-        console.log(`更新视图到问题 ${currentQuestion}`);
+function updateQuestionView() {
+    console.log(`更新视图到问题 ${currentQuestion}`);
 
-        // 隐藏所有问题
-        questions.forEach(q => {
-            q.classList.add('hidden');
-        });
+    // 隐藏所有问题
+    questions.forEach(q => {
+        q.classList.add('hidden');
+    });
 
-        // 显示当前问题
-        const currentQuestionEl = document.getElementById(`question-${currentQuestion}`);
-        if (currentQuestionEl) {
-            currentQuestionEl.classList.remove('hidden');
-        } else {
-            console.error(`找不到问题元素: question-${currentQuestion}`);
-        }
+    // 显示当前问题
+    const currentQuestionEl = document.getElementById(`question-${currentQuestion}`);
+    if (currentQuestionEl) {
+        currentQuestionEl.classList.remove('hidden');
+    } else {
+        console.error(`找不到问题元素: question-${currentQuestion}`);
+    }
 
-        // 更新进度条
-        const progressPercentage = (currentQuestion / totalQuestions) * 100;
-        progressFill.style.width = `${progressPercentage}%`;
+    // 更新进度条
+    const progressPercentage = (currentQuestion / totalQuestions) * 100;
+    progressFill.style.width = `${progressPercentage}%`;
 
-        // 更新步骤
-        steps.forEach((step, index) => {
-            // 移除所有状态类
-            step.classList.remove('active', 'completed');
+    // 更新步骤
+    steps.forEach((step, index) => {
+        // 移除所有状态类
+        step.classList.remove('active', 'completed');
 
-            // 给已完成的问题添加 completed 类
-            if (index + 1 < currentQuestion) {
-                const category = getQuestionCategory(index + 1);
-                if (userSelections[category] && userSelections[category].length > 0) {
-                    step.classList.add('completed');
-                }
+        // 给已完成的问题添加 completed 类
+        if (index + 1 < currentQuestion) {
+            const category = getQuestionCategory(index + 1);
+            if (userSelections[category] && userSelections[category].length > 0) {
+                step.classList.add('completed');
             }
-            // 当前问题添加 active 类
-            else if (index + 1 === currentQuestion) {
-                step.classList.add('active');
+        }
+        // 当前问题添加 active 类
+        else if (index + 1 === currentQuestion) {
+            step.classList.add('active');
+        }
+    });
+
+    // 设置当前问题的选中状态
+    const currentCategory = getQuestionCategory(currentQuestion);
+    if (currentQuestionEl) {
+        const options = currentQuestionEl.querySelectorAll('.option-card');
+        options.forEach(option => {
+            const value = option.dataset.value;
+            if (userSelections[currentCategory] && userSelections[currentCategory].includes(value)) {
+                option.classList.add('selected');
+            } else {
+                option.classList.remove('selected');
             }
         });
+    }
 
-        // 设置当前问题的选中状态
-        const currentCategory = getQuestionCategory(currentQuestion);
-        if (currentQuestionEl) {
-            const options = currentQuestionEl.querySelectorAll('.option-card');
-            options.forEach(option => {
-                const value = option.dataset.value;
-                if (userSelections[currentCategory] && userSelections[currentCategory].includes(value)) {
-                    option.classList.add('selected');
-                } else {
-                    option.classList.remove('selected');
-                }
-            });
-        }
+    // 检查当前问题是否有选择
+    const hasSelections = userSelections[currentCategory] && userSelections[currentCategory].length > 0;
+    console.log(`问题 ${currentQuestion} 是否有选择: ${hasSelections}`);
 
-        // 更新按钮状态
-        prevBtn.disabled = currentQuestion === 1;
+    // 更新前进/后退按钮状态
+    prevBtn.disabled = currentQuestion === 1;
 
-        if (currentQuestion === totalQuestions) {
-            nextBtn.classList.add('hidden');
-            submitBtn.classList.remove('hidden');
+    // 根据当前问题更新按钮显示
+    if (currentQuestion === totalQuestions) {
+        // 最后一题：只显示提交按钮，隐藏Next按钮
+        nextBtn.classList.add('hidden');
+        submitBtn.classList.remove('hidden');
 
-            // 检查当前问题是否有选择
-            submitBtn.disabled = userSelections[currentCategory] ? userSelections[currentCategory].length === 0 : true;
+        // 提交按钮禁用状态 - 根据是否有选择
+        submitBtn.disabled = !hasSelections;
+
+        // 添加或移除disabled类
+        if (!hasSelections) {
+            submitBtn.classList.add('disabled');
         } else {
-            nextBtn.classList.remove('hidden');
-            submitBtn.classList.add('hidden');
+            submitBtn.classList.remove('disabled');
+        }
+    } else {
+        // 非最后一题：只显示Next按钮，隐藏提交按钮
+        nextBtn.classList.remove('hidden');
+        submitBtn.classList.add('hidden');
 
-            // 检查当前问题是否有选择
-            nextBtn.disabled = userSelections[currentCategory] ? userSelections[currentCategory].length === 0 : true;
+        // Next按钮禁用状态 - 根据是否有选择
+        nextBtn.disabled = !hasSelections;
+
+        // 添加或移除disabled类
+        if (!hasSelections) {
+            nextBtn.classList.add('disabled');
+        } else {
+            nextBtn.classList.remove('disabled');
         }
     }
+}
 
     // Function to get the category based on question number
     function getQuestionCategory(questionNumber) {
