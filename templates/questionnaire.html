@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Preferences</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/questionnaire.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="sidebar">
+        <div class="profile">
+            <!-- 头像显示部分 -->
+            <div class="avatar-container">
+                <div class="avatar-image">
+                    <svg id="avatar-svg" width="100" height="100" viewBox="0 0 1136 1533">
+                        <g id="body-layer" transform="translate(147, 639)">
+                            <!-- 身体组件将在JavaScript中添加 -->
+                        </g>
+                        <g id="head-layer" transform="translate(372, 180)">
+                            <!-- 头部组件将在JavaScript中添加 -->
+                        </g>
+                        <g id="face-layer" transform="translate(531, 366)">
+                            <!-- 面部组件将在JavaScript中添加 -->
+                        </g>
+                        <g id="facial_hair-layer" transform="translate(495, 518)">
+                            <!-- 胡须组件将在JavaScript中添加 -->
+                        </g>
+                        <g id="accessories-layer" transform="translate(419, 421)">
+                            <!-- 配饰组件将在JavaScript中添加 -->
+                        </g>
+                    </svg>
+                </div>
+            </div>
+            <h2>{{ name }}</h2>
+        </div>
+        <div class="progress-container">
+            <div class="progress-label">Your Progress</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-steps">
+                <div class="step active" data-step="1">1</div>
+                <div class="step" data-step="2">2</div>
+                <div class="step" data-step="3">3</div>
+                <div class="step" data-step="4">4</div>
+                <div class="step" data-step="5">5</div>
+                <div class="step" data-step="6">6</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="question-container" id="question-1">
+            <h2>What's your preferred travel style?</h2>
+            <p class="selection-hint">Select up to 3 options that interest you most.</p>
+            <div class="options-grid">
+                {% for option in questions.travel_style %}
+                    <div class="option-card" data-value="{{ option }}">
+                        <div class="option-icon">
+                            <img src="{{ url_for('static', filename='images/travel-icons/style-' + loop.index|string + '.svg') }}"
+                                 alt="{{ option }}">
+                        </div>
+                        <div class="option-label">{{ option }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="question-container hidden" id="question-2">
+            <h2>What activities interest you most?</h2>
+            <p class="selection-hint">Select up to 3 options that interest you most.</p>
+            <div class="options-grid">
+                {% for option in questions.activities %}
+                    <div class="option-card" data-value="{{ option }}">
+                        <div class="option-icon">
+                            <img src="{{ url_for('static', filename='images/travel-icons/interest-' + loop.index|string + '.svg') }}"
+                                 alt="{{ option }}">
+                        </div>
+                        <div class="option-label">{{ option }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="question-container hidden" id="question-3">
+            <h2>How do you prefer to get around?</h2>
+            <p class="selection-hint">Select up to 3 options that interest you most.</p>
+            <div class="options-grid">
+                {% for option in questions.transportation %}
+                    <div class="option-card" data-value="{{ option }}">
+                        <div class="option-icon">
+                            <img src="{{ url_for('static', filename='images/travel-icons/getaround-' + loop.index|string + '.svg') }}"
+                                 alt="{{ option }}">
+                        </div>
+                        <div class="option-label">{{ option }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="question-container hidden" id="question-4">
+            <h2>What's your accommodation preference?</h2>
+            <p class="selection-hint">Select up to 3 options that interest you most.</p>
+            <div class="options-grid">
+                {% for option in questions.accommodation %}
+                    <div class="option-card" data-value="{{ option }}">
+                        <div class="option-icon">
+                            <img src="{{ url_for('static', filename='images/travel-icons/accommodation-' + loop.index|string + '.svg') }}"
+                                 alt="{{ option }}">
+                        </div>
+                        <div class="option-label">{{ option }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="question-container hidden" id="question-5">
+            <h2>What's your travel budget?</h2>
+            <p class="selection-hint">Select up to 3 options that interest you most.</p>
+            <div class="options-grid">
+                {% for option in questions.budget %}
+                    <div class="option-card" data-value="{{ option }}">
+                        <div class="option-icon">
+                            <img src="{{ url_for('static', filename='images/travel-icons/budget-' + loop.index|string + '.svg') }}"
+                                 alt="{{ option }}">
+                        </div>
+                        <div class="option-label">{{ option }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="question-container hidden" id="question-6">
+            <h2>How long do you plan to travel?</h2>
+            <p class="selection-hint">Select up to 3 options that interest you most.</p>
+            <div class="options-grid">
+                {% for option in questions.duration %}
+                    <div class="option-card" data-value="{{ option }}">
+                        <div class="option-icon">
+                            <img src="{{ url_for('static', filename='images/travel-icons/duration-' + loop.index|string + '.svg') }}"
+                                 alt="{{ option }}">
+                        </div>
+                        <div class="option-label">{{ option }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="navigation-buttons">
+            <button id="prev-btn" class="nav-btn" disabled>Previous</button>
+            <button id="next-btn" class="nav-btn">Next</button>
+            <button id="submit-btn" class="nav-btn submit-btn hidden">See Recommendations</button>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/questionnaire.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 获取传递的选择项
+        const avatarSelections = {{ avatar_selections|tojson }};
+
+        // 加载每个组件
+        Object.keys(avatarSelections).forEach(category => {
+            const item = avatarSelections[category];
+            if (item && item !== 'none.svg') {
+                // 加载SVG
+                fetch(`/static/assets/${category.replace('_', '-')}/${item}`)
+                    .then(response => response.text())
+                    .then(svgText => {
+                        // 解析SVG
+                        const parser = new DOMParser();
+                        const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+                        const svgElement = svgDoc.documentElement;
+
+                        // 创建一个组元素包含SVG内容
+                        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
+                        // 添加SVG内容
+                        Array.from(svgElement.children).forEach(child => {
+                            g.appendChild(document.importNode(child, true));
+                        });
+
+                        // 添加到对应层
+                        document.getElementById(`${category}-layer`).appendChild(g);
+                    })
+                    .catch(error => console.error(`加载${category}/${item}出错:`, error));
+            }
+        });
+    });
+</script>
+</body>
+</html>

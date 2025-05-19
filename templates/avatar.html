@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Travel Avatar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 隐藏的数据元素 -->
+    <div id="resource-data" data-resources='{{ resource_json }}' style="display:none;"></div>
+
+    <div class="container">
+        <!-- 左侧角色显示区 -->
+        <div class="avatar-container">
+            <div id="avatar-display">
+                <!-- SVG将在这里组合显示 -->
+                <svg id="avatar-svg" width="400" height="500" viewBox="0 0 1136 1533">
+                    <g id="body-layer"></g>
+                    <g id="head-layer"></g>
+                    <g id="face-layer"></g>
+                    <g id="facial_hair-layer"></g>
+                    <g id="accessories-layer"></g>
+                </svg>
+            </div>
+
+            <div class="avatar-controls">
+                <button id="random-btn">Randomize</button>
+                <button id="download-btn">Download Avatar</button>
+            </div>
+
+            <!-- 添加姓名输入和继续按钮 -->
+            <div class="avatar-name-container">
+                <h3>What's your name?</h3>
+                <input type="text" id="avatar-name" placeholder="Enter your name" maxlength="20">
+                <button id="continue-btn" class="continue-btn">Continue</button>
+            </div>
+        </div>
+
+        <!-- 右侧选择区 -->
+        <div class="sidebar">
+            <h2>Character Customization</h2>
+
+            <!-- 分类标签 -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="body">Body</button>
+                <button class="tab-btn" data-tab="head">Head</button>
+                <button class="tab-btn" data-tab="face">Face</button>
+                <button class="tab-btn" data-tab="facial_hair">Facial Hair</button>
+                <button class="tab-btn" data-tab="accessories">Accessories</button>
+            </div>
+
+            <!-- 选项内容 -->
+            <div class="options-container">
+                <div class="options-panel active" id="body-options">
+                    <!-- 动态生成身体选项 -->
+                </div>
+                <div class="options-panel" id="head-options">
+                    <!-- 动态生成头部选项 -->
+                </div>
+                <div class="options-panel" id="face-options">
+                    <!-- 动态生成面部特征选项 -->
+                </div>
+                <div class="options-panel" id="facial_hair-options">
+                    <!-- 动态生成胡须选项 -->
+                </div>
+                <div class="options-panel" id="accessories-options">
+                    <!-- 动态生成配饰选项 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="{{ url_for('static', filename='js/avatar.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

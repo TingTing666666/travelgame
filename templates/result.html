@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Travel Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/results.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="logo">TravelPal</div>
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('create_avatar') }}">Create New Avatar</a>
+    </nav>
+</header>
+
+<div class="container">
+    <section class="profile-section">
+        <div class="profile">
+            <div class="avatar-container">
+                <div class="avatar-image">
+                    <svg id="avatar-svg" width="120" height="120" viewBox="0 0 1136 1533">
+                        <g id="body-layer" transform="translate(147, 639)"></g>
+                        <g id="head-layer" transform="translate(372, 180)"></g>
+                        <g id="face-layer" transform="translate(531, 366)"></g>
+                        <g id="facial_hair-layer" transform="translate(495, 518)"></g>
+                        <g id="accessories-layer" transform="translate(419, 421)"></g>
+                    </svg>
+                </div>
+            </div>
+            <h2>Hello, {{ name }}!</h2>
+            <p>Based on your preferences, we've found perfect destinations for you.</p>
+        </div>
+
+        <div class="preferences-summary">
+            <h3>Your Travel Preferences</h3>
+            <ul>
+                <li><strong>Travel Style:</strong> {{ preferences.travel_style|join(', ') }}</li>
+                <li><strong>Activities:</strong> {{ preferences.activities|join(', ') }}</li>
+                <li><strong>Transportation:</strong> {{ preferences.transportation|join(', ') }}</li>
+                <li><strong>Accommodation:</strong> {{ preferences.accommodation|join(', ') }}</li>
+                <li><strong>Budget:</strong> {{ preferences.budget|join(', ') }}</li>
+                <li><strong>Duration:</strong> {{ preferences.duration|join(', ') }}</li>
+            </ul>
+        </div>
+    </section>
+    <section class="map-section">
+        <h2>China Province Compatibility</h2>
+        <p>Based on your preferences, here's how well each Chinese province matches your travel style:</p>
+        <div id="china-map-container"></div>
+    </section>
+    <section class="recommendations-section">
+        <h2>Your Top Destinations</h2>
+
+        <div class="recommendation-cards">
+            {% for rec in recommendations %}
+                <div class="recommendation-card">
+                    <div class="match-badge">{{ rec.match }}% Match</div>
+                    <div class="recommendation-image">
+                        <img src="{{ url_for('static', filename=rec.image.replace('static/', '')) }}"
+                             alt="{{ rec.name }}">
+                    </div>
+                    <div class="recommendation-content">
+                        <h3>{{ rec.name }}</h3>
+                        <p>{{ rec.description }}</p>
+                        <a href="#" class="explore-btn">Explore</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="next-steps">
+        <h2>What's Next?</h2>
+        <div class="next-steps-cards">
+            <div class="next-step-card">
+                <div class="step-icon">
+                    <img src="{{ url_for('static', filename='images/travel-icons/itinerary.svg') }}" alt="Itinerary">
+                </div>
+                <h3>Get Detailed Itinerary</h3>
+                <p>Request a personalized day-by-day travel plan for any destination</p>
+                <a href="#" class="action-btn">Plan My Trip</a>
+            </div>
+
+            <div class="next-step-card">
+                <div class="step-icon">
+                    <img src="{{ url_for('static', filename='images/travel-icons/booking.svg') }}" alt="Booking">
+                </div>
+                <h3>Find Best Deals</h3>
+                <p>Discover flights, accommodations, and experiences at unbeatable prices</p>
+                <a href="#" class="action-btn">Search Deals</a>
+            </div>
+
+            <div class="next-step-card">
+                <div class="step-icon">
+                    <img src="{{ url_for('static', filename='images/travel-icons/share.svg') }}" alt="Share">
+                </div>
+                <h3>Share Your Results</h3>
+                <p>Get input from friends and family by sharing your recommended destinations</p>
+                <a href="#" class="action-btn">Share Now</a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-logo">TravelPal</div>
+        <p>&copy; 2025 TravelPal. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 获取传递的选择项
+        const avatarSelections = {{ avatar_selections|tojson }};
+
+        // 加载每个组件
+        Object.keys(avatarSelections).forEach(category => {
+            const item = avatarSelections[category];
+            if (item && item !== 'none.svg') {
+                // 加载SVG
+                fetch(`/static/assets/${category.replace('_', '-')}/${item}`)
+                    .then(response => response.text())
+                    .then(svgText => {
+                        // 解析SVG
+                        const parser = new DOMParser();
+                        const svgDoc = parser.parseFromString(svgText, "image/svg+xml");
+                        const svgElement = svgDoc.documentElement;
+
+                        // 创建一个组元素包含SVG内容
+                        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
+                        // 添加SVG内容
+                        Array.from(svgElement.children).forEach(child => {
+                            g.appendChild(document.importNode(child, true));
+                        });
+
+                        // 添加到对应层
+                        document.getElementById(`${category}-layer`).appendChild(g);
+                    })
+                    .catch(error => console.error(`加载${category}/${item}出错:`, error));
+            }
+        });
+    });
+</script>
+<!-- 在页面底部，D3和地图脚本之前定义数据 -->
+<script>
+    // 传递省份得分数据到前端 - 使用window对象使其成为全局变量
+    window.provinceScores = {{ province_scores|tojson }};
+    console.log("省份得分数据:", window.provinceScores);
+
+    // 检查数据类型和结构
+    console.log("provinceScores 类型:", typeof window.provinceScores);
+    console.log("provinceScores 键:", Object.keys(window.provinceScores));
+    console.log("provinceScores 值示例:",
+        Object.keys(window.provinceScores).length > 0 ?
+            window.provinceScores[Object.keys(window.provinceScores)[0]] : "无数据");
+</script>
+
+<!-- 然后加载D3和地图脚本 -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="{{ url_for('static', filename='js/china-map.js') }}"></script>
+</body>
+</html>

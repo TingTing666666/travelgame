@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>None</title>
+    <g id="none-symbol" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- 红色圆圈 -->
+        <circle id="circle" fill="#FFFFFF" stroke="#43454A" stroke-width="5" cx="50" cy="50" r="40"></circle>
+
+        <!-- 红色斜线 -->
+        <line id="diagonal-line" stroke="#43454A" stroke-width="5" x1="25" y1="25" x2="75" y2="75"></line>
+    </g>
+</svg>

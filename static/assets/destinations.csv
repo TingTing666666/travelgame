@@ -1,0 +1,35 @@
+id,name,image,description
+陕西,Shaanxi,static/images/destinations/Shaanxi.jpg,Home to Terracotta Warriors and ancient capital Xi'an.
+上海,Shanghai,static/images/destinations/Shanghai.jpg,China's bustling economic hub and cultural metropolis.
+重庆,Chongqing,static/images/destinations/Chongqing.jpg,Mountain city famed for spicy hotpot.
+浙江,Zhejiang,static/images/destinations/Zhejiang.jpg,A province with rich culture and history.
+江西,Jiangxi,static/images/destinations/Jiangxi.jpg,Known for its porcelain and natural beauty.
+云南,Yunnan,static/images/destinations/Yunnan.jpg,A diverse land with stunning landscapes.
+山东,Shandong,static/images/destinations/Shandong.jpg,Birthplace of Confucius and rich in history.
+辽宁,Liaoning,static/images/destinations/Liaoning.jpg,An industrial hub in Northeast China.
+西藏,Tibet,static/images/destinations/Tibet.jpg,The roof of the world with unique culture.
+甘肃,Gansu,static/images/destinations/Gansu.jpg,Home to the ancient Silk Road.
+香港,Hong Kong,static/images/destinations/Hong Kong.jpg,A vibrant international financial center.
+青海,Qinghai,static/images/destinations/Qinghai.jpg,A highland with vast grasslands and lakes.
+北京,Beijing,static/images/destinations/Beijing.jpg,The capital of China with rich heritage.
+澳门,Macao,static/images/destinations/Macao.jpg,A fusion of Chinese and Portuguese cultures.
+内蒙古,Inner Mongolia,static/images/destinations/Inner Mongolia.jpg,Vast grasslands and nomadic culture.
+湖北,Hubei,static/images/destinations/Hubei.jpg,Famous for the Three Gorges and Wuhan city.
+安徽,Anhui,static/images/destinations/Anhui.jpg,Known for its ancient villages and mountains.
+贵州,Guizhou,static/images/destinations/Guizhou.jpg,A province with rich ethnic minority culture.
+宁夏,Ningxia,static/images/destinations/Ningxia.jpg,A land of deserts and historical sites.
+江苏,Jiangsu,static/images/destinations/Jiangsu.jpg,A prosperous region with a high GDP.
+新疆,Xinjiang,static/images/destinations/Xinjiang.jpg,A vast land with diverse cultures and landscapes.
+山西,Shanxi,static/images/destinations/Shanxi.jpg,An ancient province with historical sites.
+湖南,Hunan,static/images/destinations/Hunan.jpg,Known for spicy food and beautiful scenery.
+四川,Sichuan,static/images/destinations/Sichuan.jpg,Home to the giant pandas and spicy cuisine.
+广西,Guangxi,static/images/destinations/Guangxi.jpg,Famous for its karst landscapes and rice terraces.
+吉林,Jilin,static/images/destinations/Jilin.jpg,A province with beautiful winter landscapes.
+台湾,Taiwan,static/images/destinations/Taiwan.jpg,An island with rich culture and technology.
+河北,Hebei,static/images/destinations/Hebei.jpg,Surrounding the capital Beijing with historical sites.
+天津,Tianjin,static/images/destinations/Tianjin.jpg,A major port city with a unique blend of culture.
+广东,Guangdong,static/images/destinations/Guangdong.jpg,A leading economic province in South China.
+福建,Fujian,static/images/destinations/Fujian.jpg,A coastal province with a rich history and culture.
+黑龙江,Heilongjiang,static/images/destinations/Heilongjiang.jpg,A province with a cold climate and beautiful nature.
+河南,Henan,static/images/destinations/Henan.jpg,A cradle of Chinese civilization with many historical sites.
+海南,Hainan,static/images/destinations/Hainan.jpg,A tropical island paradise with beautiful beaches.

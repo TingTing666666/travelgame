@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelPal - Personalized Travel Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Arizonia&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">TravelPal</div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Destinations</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Your Perfect</h1>
+            <h11>Journey</h11>
+            <p>Personalized travel recommendations tailored to your unique preferences</p>
+            <a href="{{ url_for('create_avatar') }}" class="cta-button">Start Your Adventure</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <div class="feature-icon">
+                <img src="{{ url_for('static', filename='images/travel-icons/avatar.svg') }}" alt="Avatar">
+            </div>
+            <h3>Create Your Traveler</h3>
+            <p>Customize your virtual travel companion to reflect your personal style</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">
+                <img src="{{ url_for('static', filename='images/travel-icons/preferences.svg') }}" alt="Preferences">
+            </div>
+            <h3>Share Your Preferences</h3>
+            <p>Tell us what matters most to you when exploring new destinations</p>
+        </div>
+        <div class="feature">
+            <div class="feature-icon">
+                <img src="{{ url_for('static', filename='images/travel-icons/recommendations.svg') }}" alt="Recommendations">
+            </div>
+            <h3>Get Personalized Recommendations</h3>
+            <p>Discover destinations and experiences perfectly matched to your tastes</p>
+        </div>
+    </section>
+
+    <section class="destinations">
+        <h2>Popular Destinations</h2>
+        <div class="destination-grid">
+            <div class="destination">
+                <img src="{{ url_for('static', filename='images/destinations/Chongqing.jpg') }}" alt="Chongqing">
+                <h3>Chongqing</h3>
+            </div>
+            <div class="destination">
+                <img src="{{ url_for('static', filename='images/destinations/Tibet.jpg') }}" alt="Tibet">
+                <h3>Tibet</h3>
+            </div>
+            <div class="destination">
+                <img src="{{ url_for('static', filename='images/destinations/Tianjin.jpg') }}" alt="Tianjin">
+                <h3>Tianjin</h3>
+            </div>
+            <div class="destination">
+                <img src="{{ url_for('static', filename='images/destinations/Yunnan.jpg') }}" alt="Yunnan">
+                <h3>Yunnan</h3>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">TravelPal</div>
+            <p>&copy; 2025 TravelPal. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

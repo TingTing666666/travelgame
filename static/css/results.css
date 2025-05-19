@@ -1,0 +1,435 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+}
+
+nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #1DE29A;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 20px;
+}
+
+.profile-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 50px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-container {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #f8f8f8;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.avatar-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar-image svg {
+    width: 100%;
+    height: 100%;
+}
+
+.profile h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.profile p {
+    color: #777;
+    text-align: center;
+    max-width: 350px;
+}
+
+.preferences-summary {
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    padding: 20px;
+    min-width: 300px;
+}
+
+.preferences-summary h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.preferences-summary ul {
+    list-style: none;
+}
+
+.preferences-summary li {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.preferences-summary strong {
+    color: #333;
+}
+
+.recommendations-section {
+    margin-bottom: 50px;
+}
+
+.recommendations-section h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.recommendation-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.recommendation-card {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s;
+    position: relative;
+}
+
+.recommendation-card:hover {
+    transform: translateY(-10px);
+}
+
+.match-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #1DE29A;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.recommendation-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.recommendation-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.recommendation-card:hover .recommendation-image img {
+    transform: scale(1.1);
+}
+
+.recommendation-content {
+    padding: 20px;
+}
+
+.recommendation-content h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.recommendation-content p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.explore-btn {
+    display: inline-block;
+    background-color: #1DE29A;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s;
+}
+
+.explore-btn:hover {
+    background-color: #19c688;
+}
+
+.next-steps {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+}
+
+.next-steps h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.next-steps-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.next-step-card {
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.next-step-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.step-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 15px;
+    background-color: #f8f8f8;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.step-icon img {
+    width: 35px;
+    height: 35px;
+}
+
+.next-step-card h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.next-step-card p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.action-btn {
+    display: inline-block;
+    background-color: #f5f5f5;
+    color: #555;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.action-btn:hover {
+    background-color: #1DE29A;
+    color: white;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 30px 0;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-logo {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+footer p {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.step {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    color: #777;
+    transition: all 0.3s ease;
+    cursor: pointer; /* 添加指针样式 */
+}
+
+.step:hover {
+    background-color: #d0d0d0;
+    transform: scale(1.1);
+}
+
+.step.completed {
+    background-color: #19c688;
+    color: white;
+}
+
+.step.active {
+    background-color: #1DE29A;
+    color: white;
+    box-shadow: 0 0 10px rgba(29, 226, 154, 0.5);
+}
+/* 中国地图部分样式 */
+.map-section {
+    margin-bottom: 50px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+}
+
+.map-section h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.map-section p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+#china-map-container {
+    width: 100%;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.province {
+    transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+.province:hover {
+    cursor: pointer;
+}
+
+.province-label {
+    pointer-events: none;
+    text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.5);
+}
+
+.error-message {
+    color: #e74c3c;
+    text-align: center;
+    font-size: 16px;
+    padding: 20px;
+}
+
+#tooltip {
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .profile-section {
+        flex-direction: column;
+    }
+
+    .profile {
+        margin-bottom: 30px;
+    }
+
+    .preferences-summary {
+        width: 100%;
+        min-width: unset;
+    }
+}
+
+@media (max-width: 768px) {
+    header {
+        padding: 15px 20px;
+    }
+
+    .container {
+        padding: 30px 15px;
+    }
+
+    .recommendation-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .next-steps-cards {
+        grid-template-columns: 1fr;
+    }
+}
