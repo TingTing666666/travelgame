@@ -13,6 +13,18 @@ app.config['SESSION_COOKIE_SECURE'] = False  # 开发环境设为False
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = 3600  # 会话持续时间（秒）
 
+@app.route('/debug_routes')
+def debug_routes():
+    """输出所有注册的路由"""
+    routes = []
+    for rule in app.url_map.iter_rules():
+        routes.append({
+            "endpoint": rule.endpoint,
+            "methods": list(rule.methods),
+            "route": str(rule)
+        })
+    return jsonify({"routes": routes})
+
 # 会话数据序列化函数
 def serialize_session_data(data):
     return base64.b64encode(pickle.dumps(data)).decode('utf-8')
@@ -457,9 +469,14 @@ def calculate_top_destinations(province_scores):
         csv_path = os.path.join('static', 'assets', 'destinations.csv')
         df = pd.read_csv(csv_path, encoding='GBK')
 
-        # 打印CSV的列名以进行调试
-        print("目的地CSV列名:", df.columns.tolist())
-        print("CSV前两行:", df.head(2).to_dict('records'))
+        # 加载省份数据，用于获取英文名称
+        province_data_path = os.path.join('static', 'assets', 'province_data.csv')
+        province_df = pd.read_csv(province_data_path, encoding='utf-8')
+
+        # 创建中文名称到英文名称的映射
+        name_to_english = {}
+        for _, row in province_df.iterrows():
+            name_to_english[row['name']] = row['english_name']
 
         # 获取省份得分的前三名
         top_province_ids = sorted(province_scores.items(), key=lambda x: x[1], reverse=True)[:3]
@@ -479,13 +496,18 @@ def calculate_top_destinations(province_scores):
 
                 if not destination_row.empty:
                     destination = destination_row.iloc[0]
+
+                    # 获取该省份的英文名称
+                    english_name = name_to_english.get(province_name, province_name)
+
                     recommendations.append({
-                        'name': destination['name'],
+                        'name': destination['name'],  # 中文名
+                        'english_name': english_name,  # 英文名
                         'image': destination['image'],
                         'description': destination['description'],
                         'match': int(score)  # 匹配度已经在province_scores中计算好
                     })
-                    print(f"找到匹配的目的地: {destination['name']}")
+                    print(f"找到匹配的目的地: {destination['name']}, 英文名: {english_name}")
                 else:
                     print(f"在CSV中找不到省份 {province_name} 的记录")
             else:
@@ -495,19 +517,22 @@ def calculate_top_destinations(province_scores):
         default_destinations = [
             {
                 'name': '北京',
-                'image': 'beijing.jpg',
+                'english_name': 'Beijing',
+                'image': 'static/images/destinations/Beijing.jpg',
                 'description': '中国首都，拥有丰富的历史文化。',
                 'match': 85
             },
             {
                 'name': '上海',
-                'image': 'shanghai.jpg',
+                'english_name': 'Shanghai',
+                'image': 'static/images/destinations/Shanghai.jpg',
                 'description': '现代化国际都市。',
                 'match': 80
             },
             {
                 'name': '西安',
-                'image': 'xian.jpg',
+                'english_name': 'Xian',
+                'image': 'static/images/destinations/Xian.jpg',
                 'description': '古都，拥有众多历史遗迹。',
                 'match': 75
             }
@@ -530,19 +555,22 @@ def calculate_top_destinations(province_scores):
         return [
             {
                 'name': '北京',
-                'image': 'beijing.jpg',
+                'english_name': 'Beijing',
+                'image': 'static/images/destinations/Beijing.jpg',
                 'description': '中国首都，拥有丰富的历史文化。',
                 'match': 85
             },
             {
                 'name': '上海',
-                'image': 'shanghai.jpg',
+                'english_name': 'Shanghai',
+                'image': 'static/images/destinations/Shanghai.jpg',
                 'description': '现代化国际都市。',
                 'match': 80
             },
             {
                 'name': '西安',
-                'image': 'xian.jpg',
+                'english_name': 'Xian',
+                'image': 'static/images/destinations/Xian.jpg',
                 'description': '古都，拥有众多历史遗迹。',
                 'match': 75
             }
@@ -558,6 +586,242 @@ def clear_session():
 def debug_session():
     """调试会话数据"""
     return jsonify(dict(session))
+
+
+@app.route('/province/<province_name>')
+def province_detail(province_name):
+    """省份详情页面"""
+    try:
+        print(f"访问省份详情页: {province_name}")
+
+        # 加载 province_data.csv
+        csv_path = os.path.join('static', 'assets', 'province_data.csv')
+        province_df = pd.read_csv(csv_path, encoding='GBK')
+
+        # 根据英文名称查找省份信息
+        province_data = province_df[province_df['english_name'] == province_name]
+
+        if province_data.empty:
+            print(f"在province_data.csv中未找到省份: {province_name}")
+            return redirect(url_for('home'))
+
+        province = province_data.iloc[0]
+        province_id = province['id']  # 获取省份ID用于查找景点
+
+        # 映射到省份页面需要的格式
+        province_dict = {
+            'id': province['id'],
+            'name': province['name'],
+            'english_name': province['english_name'],
+            'banner_image': province['banner_image'],
+            'description': province['description'],
+            'map_id': province['map_id'] if 'map_id' in province else get_map_id_for_province(province['id'])
+        }
+
+        # 加载景点数据
+        attractions_csv_path = os.path.join('static', 'assets', 'attraction_data.csv')
+
+        try:
+            attractions_df = pd.read_csv(attractions_csv_path, encoding='utf-8')
+        except UnicodeDecodeError:
+            # 如果UTF-8解码失败，尝试其他编码
+            attractions_df = pd.read_csv(attractions_csv_path, encoding='gbk')
+
+        # 根据省份ID筛选景点
+        province_attractions = attractions_df[attractions_df['province_id'] == province_id]
+
+        # 如果找到该省份的景点
+        attractions = []
+        if not province_attractions.empty:
+            for _, attraction in province_attractions.iterrows():
+                attractions.append({
+                    'province_id': attraction['province_id'],
+                    'attraction_name': attraction['attraction_name'],
+                    'english_name': attraction['english_name'],
+                    'image': attraction['image'],
+                    'description': attraction['description']
+                })
+            print(f"从CSV加载了{len(attractions)}个景点")
+        else:
+            print(f"未找到省份{province_id}的景点记录，使用默认景点")
+            # 如果没有找到该省份的景点，使用默认景点
+            attractions = [
+                {
+                    'province_id': province_id,
+                    'attraction_name': f'{province_dict["name"]}景点1',
+                    'english_name': f'{province_name} Attraction 1',
+                    'image': 'default_attraction.jpg',
+                    'description': 'A popular tourist attraction in this province.'
+                },
+                {
+                    'province_id': province_id,
+                    'attraction_name': f'{province_dict["name"]}景点2',
+                    'english_name': f'{province_name} Attraction 2',
+                    'image': 'default_attraction.jpg',
+                    'description': 'Another famous site with cultural significance.'
+                },
+                {
+                    'province_id': province_id,
+                    'attraction_name': f'{province_dict["name"]}景点3',
+                    'english_name': f'{province_name} Attraction 3',
+                    'image': 'default_attraction.jpg',
+                    'description': 'A natural wonder in this beautiful province.'
+                }
+            ]
+
+        # 获取省份地图数据
+        map_data = get_province_map_data(province_dict['map_id'])
+
+        return render_template(
+            'province.html',
+            province=province_dict,
+            attractions=attractions,
+            map_data=json.dumps(map_data) if map_data else None
+        )
+    except Exception as e:
+        print(f"处理省份详情页时出错: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return redirect(url_for('home'))
+
+
+def get_map_id_for_province(province_id):
+    """根据省份ID获取地图ID"""
+    province_to_map_id = {
+        "北京": "CNBJ",
+        "天津": "CNTJ",
+        "河北": "CNHE",
+        "山西": "CNSX",
+        "内蒙古": "CNMN",
+        "辽宁": "CNLN",
+        "吉林": "CNJL",
+        "黑龙江": "CNHL",
+        "上海": "CNSH",
+        "江苏": "CNJS",
+        "浙江": "CNZJ",
+        "安徽": "CNAH",
+        "福建": "CNFJ",
+        "江西": "CNJX",
+        "山东": "CNSD",
+        "河南": "CNHA",
+        "湖北": "CNHB",
+        "湖南": "CNHN",
+        "广东": "CNGD",
+        "广西": "CNGX",
+        "海南": "CNHI",
+        "重庆": "CNCQ",
+        "四川": "CNSC",
+        "贵州": "CNGZ",
+        "云南": "CNYN",
+        "西藏": "CNXZ",
+        "陕西": "CNSN",
+        "甘肃": "CNGS",
+        "青海": "CNQH",
+        "宁夏": "CNNX",
+        "新疆": "CNXJ"
+    }
+    return province_to_map_id.get(province_id, "CNBJ")  # 默认返回北京的ID
+
+
+def get_province_map_data(map_id):
+    """获取省份地图数据"""
+    try:
+        map_path = os.path.join('static', 'assets', 'cn.json')
+
+        with open(map_path, 'r', encoding='utf-8') as f:
+            china_map = json.load(f)
+
+        # 查找该省份的地图数据
+        for feature in china_map.get('features', []):
+            if feature.get('properties', {}).get('id') == map_id:
+                return feature
+
+        return None
+    except Exception as e:
+        print(f"获取地图数据出错: {str(e)}")
+        return None
+
+
+@app.route('/destinations')
+def destinations():
+    """目的地页面"""
+    try:
+        # 加载目的地数据
+        csv_path = os.path.join('static', 'assets', 'destinations.csv')
+        df = pd.read_csv(csv_path, encoding='GBK')
+
+        # 加载省份数据，用于获取英文名称
+        province_data_path = os.path.join('static', 'assets', 'province_data.csv')
+        province_df = pd.read_csv(province_data_path, encoding='GBK')
+
+        # 创建中文名称到英文名称的映射
+        name_to_english = {}
+        for _, row in province_df.iterrows():
+            name_to_english[row['name']] = row['english_name']
+
+        # 加载偏好数据，用于标签筛选
+        preferences_path = os.path.join('static', 'assets', 'cdata.csv')
+        pref_df = pd.read_csv(preferences_path, encoding='gbk')
+
+        # 获取所有可筛选的标签（除了'id'列之外的所有列）
+        all_tags = [col for col in pref_df.columns if col != 'id']
+
+        # 为每个标签创建一个安全的ID (用于HTML属性)
+        tag_to_id = {}
+        for i, tag in enumerate(all_tags):
+            # 创建安全的标签ID，替换特殊字符和空格
+            safe_id = f"tag_{i}"
+            tag_to_id[tag] = safe_id
+
+        # 构建目的地列表
+        destinations_list = []
+        for _, dest in df.iterrows():
+            province_name = dest['id']
+
+            # 获取该省份的英文名称
+            english_name = name_to_english.get(province_name, province_name)
+
+            # 获取该省份的标签列表
+            province_tags = []
+            province_tag_ids = []  # 存储安全的标签ID
+
+            province_row = pref_df[pref_df['id'] == province_name]
+            if not province_row.empty:
+                for tag in all_tags:
+                    try:
+                        score = float(province_row[tag].values[0])
+                        # 如果得分大于7，认为该标签适用于这个省份
+                        if score > 70:
+                            province_tags.append(tag)  # 原始标签名
+                            province_tag_ids.append(tag_to_id[tag])  # 安全的标签ID
+                    except (ValueError, TypeError, IndexError):
+                        # 处理可能的错误
+                        continue
+
+            # 打印调试信息
+            print(f"省份: {province_name}, 标签IDs: {province_tag_ids}")
+
+            destinations_list.append({
+                'id': province_name,
+                'name': dest['name'],
+                'english_name': english_name,
+                'image': dest['image'],
+                'description': dest['description'],
+                'tags': province_tags,  # 原始标签名（用于显示）
+                'tag_ids': province_tag_ids  # 安全的标签ID（用于筛选）
+            })
+
+        return render_template(
+            'destinations.html',
+            destinations=destinations_list,
+            all_tags=all_tags,
+            tag_to_id=tag_to_id
+        )
+    except Exception as e:
+        print(f"获取目的地数据时出错: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return redirect(url_for('home'))
 
 if __name__ == '__main__':
     app.run(debug=True)
