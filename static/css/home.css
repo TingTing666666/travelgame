@@ -196,32 +196,32 @@ header.scrolled .nav-links a {
     margin: 0 auto;
 }
 
-.destination {
-    overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
-}
+/*.destination {*/
+/*    overflow: hidden;*/
+/*    border-radius: 10px;*/
+/*    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);*/
+/*    transition: transform 0.3s;*/
+/*}*/
 
 .destination:hover {
     transform: translateY(-10px);
 }
 
-.destination img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    transition: transform 0.5s;
-}
+/*.destination img {*/
+/*    width: 100%;*/
+/*    height: 200px;*/
+/*    object-fit: cover;*/
+/*    transition: transform 0.5s;*/
+/*}*/
 
 .destination:hover img {
     transform: scale(1.1);
 }
 
-.destination h3 {
-    padding: 15px 0;
-    background-color: #fff;
-}
+/*.destination h3 {*/
+/*    padding: 15px 0;*/
+/*    background-color: #fff;*/
+/*}*/
 
 /* Footer */
 footer {
@@ -248,34 +248,146 @@ footer p {
     color: #aaa;
 }
 
-/* Responsive adjustments */
+/* 响应式调整 */
 @media (max-width: 768px) {
-    header {
-        padding: 15px;
+    .destination-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
 
-    .hero h1 {
-        font-size: 2.5rem;
+    .destination-image {
+        height: 180px;
     }
 
-    .hero p {
-        font-size: 1rem;
+    .destination-overlay h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
     }
 
-    .features {
-        padding: 50px 20px;
+    .destination-link {
+        padding: 6px 15px;
+        font-size: 12px;
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    .feature {
-        min-width: 100%;
-        margin: 10px 0;
-    }
-
-    .destinations {
-        padding: 30px 20px;
-    }
-
+@media (max-width: 480px) {
     .destination-grid {
         grid-template-columns: 1fr;
     }
+
+    .destination-image {
+        height: 200px;
+    }
+}
+
+/* 目的地卡片新样式 - 文字在图片上 */
+.destination {
+    position: relative;
+    margin-bottom: 0;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.destination:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.destination-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.destination-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.destination:hover .destination-image img {
+    transform: scale(1.1);
+}
+
+.destination-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    color: white;
+    text-align: center;
+}
+
+.destination-overlay h3 {
+    margin: 0 0 15px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.destination-link {
+    display: inline-block;
+    padding: 8px 20px;
+    background-color: #1DE29A;
+    color: white;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.destination:hover .destination-link {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.destination-link:hover {
+    background-color: #19c688;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* See All按钮样式 */
+.see-all-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.see-all-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #fff;
+    color: #1DE29A;
+    border: 2px solid #1DE29A;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(29, 226, 154, 0.1);
+}
+
+.see-all-btn:hover {
+    background-color: #1DE29A;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(29, 226, 154, 0.2);
+}
+
+.see-all-btn:active {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(29, 226, 154, 0.2);
 }

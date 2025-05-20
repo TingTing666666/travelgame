@@ -66,7 +66,7 @@
                     <div class="recommendation-content">
                         <h3>{{ rec.name }}</h3>
                         <p>{{ rec.description }}</p>
-                        <a href="#" class="explore-btn">Explore</a>
+                        <a href="{{ url_for('province_detail', province_name=rec.english_name) }}" class="explore-btn">Explore</a>
                     </div>
                 </div>
             {% endfor %}

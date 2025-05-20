@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ province.english_name }} - TravelPal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/province.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+<header>
+<nav>
+    <div class="logo">TravelPal</div>
+    <ul class="nav-links">
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('destinations') }}">Destinations</a></li>
+        <li><a href="{{ url_for('create_avatar') }}">Create Avatar</a></li>
+        <li><a href="{{ url_for('results') }}">Results</a></li>
+    </ul>
+</nav>
+</header>
+
+<div class="container">
+    <!-- Banner section -->
+    <section class="banner-section">
+        <div class="banner-image">
+            <img src="{{ url_for('static', filename='images/destinations/' + province.banner_image) }}"
+                 alt="{{ province.english_name }}">
+        </div>
+        <div class="province-info">
+            <h1>{{ province.english_name }}</h1>
+            <h2>{{ province.name }}</h2>
+            <p class="province-description">{{ province.description }}</p>
+        </div>
+    </section>
+
+    <section class="carousel-section">
+        <div class="carousel-container">
+            <div class="carousel-track">
+                {% for attraction in attractions %}
+                    <div class="carousel-slide {% if loop.first %}current-slide{% endif %}">
+                        <img src="{{ url_for('static', filename='images/attractions/' + attraction.image) }}"
+                             alt="{{ attraction.english_name }}">
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-button prev">&#10094;</button>
+            <button class="carousel-button next">&#10095;</button>
+            <div class="carousel-nav">
+                {% for attraction in attractions %}
+                    <button class="carousel-indicator {% if loop.first %}current-slide{% endif %}"
+                            data-index="{{ loop.index0 }}"></button>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Province map and details section -->
+    <section class="map-section">
+        <div class="province-map-container">
+            <h3>Province Map</h3>
+            <div id="province-outline-map"></div>
+        </div>
+        <div class="province-stats">
+            <h3>Quick Facts</h3>
+            <ul>
+                <li><strong>Capital:</strong> <span id="province-capital">{{ province.english_name }}</span></li>
+                <li><strong>Best Time to Visit:</strong> <span id="best-time">April to October</span></li>
+                <li><strong>Known For:</strong> <span id="known-for">Cultural heritage, natural landscapes</span></li>
+                <li><strong>Local Cuisine:</strong> <span id="local-cuisine">Regional specialties</span></li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Attractions section -->
+    <section class="attractions-section">
+        <h2>Popular Attractions</h2>
+        <div class="attractions-container">
+            <div class="attractions-nav">
+                {% for attraction in attractions %}
+                    <div class="attraction-nav-item {% if loop.first %}active{% endif %}"
+                         data-index="{{ loop.index0 }}">
+                        {{ attraction.english_name }}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="attraction-details">
+                {% for attraction in attractions %}
+                    <div class="attraction-detail {% if loop.first %}active{% endif %}" data-index="{{ loop.index0 }}">
+                        <div class="attraction-image">
+                            <img src="{{ url_for('static', filename='images/attractions/' + attraction.image) }}"
+                                 alt="{{ attraction.english_name }}">
+                        </div>
+                        <div class="attraction-info">
+                            <h3>{{ attraction.english_name }}</h3>
+                            <h4>{{ attraction.attraction_name }}</h4>
+                            <p>{{ attraction.description }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Travel tips section -->
+    <section class="travel-tips-section">
+        <h2>Travel Tips</h2>
+        <div class="tips-container">
+            <div class="tip">
+                <div class="tip-icon">
+                    <img src="{{ url_for('static', filename='images/travel-icons/transport.svg') }}"
+                         alt="Transportation">
+                </div>
+                <h3>Getting Around</h3>
+                <p>Public transportation is convenient in major cities. Consider renting a bike for short distances or
+                    hiring a guide for remote areas.</p>
+            </div>
+            <div class="tip">
+                <div class="tip-icon">
+                    <img src="{{ url_for('static', filename='images/travel-icons/accommodation.svg') }}"
+                         alt="Accommodation">
+                </div>
+                <h3>Where to Stay</h3>
+                <p>From luxury hotels to budget hostels, accommodations are widely available. Book in advance during
+                    peak tourist seasons.</p>
+            </div>
+            <div class="tip">
+                <div class="tip-icon">
+                    <img src="{{ url_for('static', filename='images/travel-icons/food.svg') }}" alt="Food">
+                </div>
+                <h3>Local Cuisine</h3>
+                <p>Try the local specialties at small family-run restaurants for an authentic experience. Street food is
+                    delicious but choose vendors with good hygiene.</p>
+            </div>
+            <div class="tip">
+                <div class="tip-icon">
+                    <img src="{{ url_for('static', filename='images/travel-icons/weather.svg') }}" alt="Weather">
+                </div>
+                <h3>Weather</h3>
+                <p>Check the seasonal weather before your trip. Pack accordingly and be prepared for occasional weather
+                    changes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to action section -->
+    <section class="cta-section">
+        <h2>Ready to Explore {{ province.english_name }}?</h2>
+        <p>Create your personalized travel plan now</p>
+        <div class="cta-buttons">
+            <a href="#" class="cta-button primary">Plan My Trip</a>
+            <a href="{{ url_for('results') }}" class="cta-button secondary">View Other Destinations</a>
+        </div>
+    </section>
+</div>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-logo">TravelPal</div>
+        <p>&copy; 2025 TravelPal. All rights reserved.</p>
+    </div>
+</footer>
+
+<script>
+    // Store the province map data from backend
+    const provinceMapData = {{ map_data|safe if map_data else 'null' }};
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize carousel
+        initCarousel();
+
+        // Initialize attractions tabs
+        initAttractionsTabs();
+
+        // Initialize province map
+        if (provinceMapData) {
+            initProvinceMap();
+        } else {
+            console.error("Province map data not available");
+            document.getElementById('province-outline-map').innerHTML =
+                '<div class="error-message">Map data not available</div>';
+        }
+    });
+
+    function initCarousel() {
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const nextButton = document.querySelector('.carousel-button.next');
+        const prevButton = document.querySelector('.carousel-button.prev');
+        const dotsNav = document.querySelector('.carousel-nav');
+        const dots = Array.from(document.querySelectorAll('.carousel-indicator'));
+
+        const slideWidth = slides[0].getBoundingClientRect().width;
+
+        // Arrange slides next to each other
+        slides.forEach((slide, index) => {
+            slide.style.left = slideWidth * index + 'px';
+        });
+
+        // Function to move to a specific slide
+        const moveToSlide = (track, currentSlide, targetSlide) => {
+            track.style.transform = 'translateX(-' + targetSlide.style.left + ')';
+            currentSlide.classList.remove('current-slide');
+            targetSlide.classList.add('current-slide');
+        };
+
+        const updateDots = (currentDot, targetDot) => {
+            currentDot.classList.remove('current-slide');
+            targetDot.classList.add('current-slide');
+        };
+
+        const hideShowArrows = (slides, prevButton, nextButton, targetIndex) => {
+            if (targetIndex === 0) {
+                prevButton.classList.add('is-hidden');
+                nextButton.classList.remove('is-hidden');
+            } else if (targetIndex === slides.length - 1) {
+                prevButton.classList.remove('is-hidden');
+                nextButton.classList.add('is-hidden');
+            } else {
+                prevButton.classList.remove('is-hidden');
+                nextButton.classList.remove('is-hidden');
+            }
+        };
+
+        // When I click left, move slides to the left
+        prevButton.addEventListener('click', e => {
+            const currentSlide = track.querySelector('.current-slide');
+            const prevSlide = currentSlide.previousElementSibling;
+            if (!prevSlide) return;
+
+            const currentDot = dotsNav.querySelector('.current-slide');
+            const prevDot = currentDot.previousElementSibling;
+            const prevIndex = slides.findIndex(slide => slide === prevSlide);
+
+            moveToSlide(track, currentSlide, prevSlide);
+            updateDots(currentDot, prevDot);
+            hideShowArrows(slides, prevButton, nextButton, prevIndex);
+        });
+
+        // When I click right, move slides to the right
+        nextButton.addEventListener('click', e => {
+            const currentSlide = track.querySelector('.current-slide');
+            const nextSlide = currentSlide.nextElementSibling;
+            if (!nextSlide) return;
+
+            const currentDot = dotsNav.querySelector('.current-slide');
+            const nextDot = currentDot.nextElementSibling;
+            const nextIndex = slides.findIndex(slide => slide === nextSlide);
+
+            moveToSlide(track, currentSlide, nextSlide);
+            updateDots(currentDot, nextDot);
+            hideShowArrows(slides, prevButton, nextButton, nextIndex);
+        });
+
+        // When I click the nav indicators, move to that slide
+        dotsNav.addEventListener('click', e => {
+            const targetDot = e.target.closest('button');
+            if (!targetDot) return;
+
+            const currentSlide = track.querySelector('.current-slide');
+            const currentDot = dotsNav.querySelector('.current-slide');
+            const targetIndex = dots.findIndex(dot => dot === targetDot);
+            const targetSlide = slides[targetIndex];
+
+            moveToSlide(track, currentSlide, targetSlide);
+            updateDots(currentDot, targetDot);
+            hideShowArrows(slides, prevButton, nextButton, targetIndex);
+        });
+
+        // Initialize buttons visibility
+        hideShowArrows(slides, prevButton, nextButton, 0);
+
+        // Auto advance slides every 5 seconds
+        let slideInterval = setInterval(() => {
+            const currentSlide = track.querySelector('.current-slide');
+            let nextSlide = currentSlide.nextElementSibling;
+
+            // If at the end, loop back to first slide
+            if (!nextSlide) {
+                nextSlide = slides[0];
+            }
+
+            const currentDot = dotsNav.querySelector('.current-slide');
+            const nextIndex = slides.findIndex(slide => slide === nextSlide);
+            const nextDot = dots[nextIndex];
+
+            moveToSlide(track, currentSlide, nextSlide);
+            updateDots(currentDot, nextDot);
+            hideShowArrows(slides, prevButton, nextButton, nextIndex);
+        }, 5000);
+
+        // Pause auto-advance on hover
+        track.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+
+        track.addEventListener('mouseleave', () => {
+            slideInterval = setInterval(() => {
+                const currentSlide = track.querySelector('.current-slide');
+                let nextSlide = currentSlide.nextElementSibling;
+
+                if (!nextSlide) {
+                    nextSlide = slides[0];
+                }
+
+                const currentDot = dotsNav.querySelector('.current-slide');
+                const nextIndex = slides.findIndex(slide => slide === nextSlide);
+                const nextDot = dots[nextIndex];
+
+                moveToSlide(track, currentSlide, nextSlide);
+                updateDots(currentDot, nextDot);
+                hideShowArrows(slides, prevButton, nextButton, nextIndex);
+            }, 5000);
+        });
+    }
+
+    function initAttractionsTabs() {
+        const navItems = document.querySelectorAll('.attraction-nav-item');
+        const detailItems = document.querySelectorAll('.attraction-detail');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', function () {
+                // Remove active class from all items
+                navItems.forEach(navItem => navItem.classList.remove('active'));
+                detailItems.forEach(detailItem => detailItem.classList.remove('active'));
+
+                // Add active class to clicked item and corresponding detail
+                const index = this.dataset.index;
+                this.classList.add('active');
+                document.querySelector(`.attraction-detail[data-index="${index}"]`).classList.add('active');
+            });
+        });
+    }
+
+    function initProvinceMap() {
+        const width = 300;
+        const height = 300;
+
+        // Create SVG container
+        const svg = d3.select('#province-outline-map')
+            .append('svg')
+            .attr('width', width)
+            .attr('height', height)
+            .attr('viewBox', [0, 0, width, height]);
+
+        // Create a projection
+        const projection = d3.geoMercator()
+            .fitSize([width, height], provinceMapData);
+
+        // Create a path generator
+        const path = d3.geoPath()
+            .projection(projection);
+
+        // Draw the province
+        svg.append('path')
+            .datum(provinceMapData)
+            .attr('d', path)
+            .attr('fill', '#e5f5e0')
+            .attr('stroke', '#31a354')
+            .attr('stroke-width', 1);
+    }
+</script>
+</body>
+</html>

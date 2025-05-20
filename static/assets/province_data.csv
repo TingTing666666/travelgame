@@ -1,0 +1,35 @@
+id,name,english_name,banner_image,description,map_id
+北京,北京,Beijing,Beijing.jpg,"Beijing is the capital of China with a rich history spanning over 3000 years. Home to the Forbidden City, Temple of Heaven, and a gateway to the Great Wall of China, Beijing blends imperial splendor with modern innovation.",CNBJ
+天津,天津,Tianjin,Tianjin.jpg,"Tianjin is a major port city in northern China, known for its blend of modern skyscrapers and historical European-style architecture. It is a hub for trade, culture, and innovation.",CNTJ
+河北,河北,Hebei,Hebei.jpg,"Hebei surrounds Beijing and Tianjin, featuring a rich history and natural beauty, including the famous Chengde Mountain Resort. It's an important area for agriculture and industry.",CNHE
+山西,山西,Shanxi,Shanxi.jpg,"Shanxi, located in northern China, is known for its ancient history, coal resources, and the famous Pingyao Ancient City. It boasts rich cultural heritage from its many ancient temples and Buddhist caves.",CNSX
+内蒙古,内蒙古,Inner Mongolia,Inner Mongolia.jpg,"Inner Mongolia is known for its vast grasslands, nomadic culture, and rich Mongolian traditions. The region is famous for its deserts, wildlife, and the Naadam festival.",CNMN
+辽宁,辽宁,Liaoning,liaoning.jpg,"Liaoning, in northeastern China, is an industrial powerhouse with rich natural resources. It’s also home to historical sites such as the Shenyang Imperial Palace.",CNLN
+吉林,吉林,Jilin,Jilin.jpg,"Jilin, a northeastern province known for its beautiful landscapes and snowy winters, is famous for the Changbai Mountains and its close ties to Korean culture.",CNJL
+黑龙江,黑龙江,Heilongjiang,Heilongjiang.jpg,"Heilongjiang, the northernmost province, is known for its extreme winters, the Ice Festival, and its rich Russian influences. Harbin, its capital, is famed for its ice sculptures.",CNHL
+上海,上海,Shanghai,Shanghai.jpg,"Shanghai is China's largest city and global financial hub. Known for its futuristic skyline including the Oriental Pearl Tower, it offers a perfect blend of East and West with its colonial architecture and contemporary developments.",CNSH
+江苏,江苏,Jiangsu,Jiangsu.jpg,"Jiangsu, located along the eastern coast, is known for its rich cultural history, including the ancient city of Nanjing, and is a key economic and manufacturing center.",CNJS
+浙江,浙江,Zhejiang,Zhejiang.jpg,"Zhejiang, known for its beautiful landscapes such as West Lake in Hangzhou, is a thriving province famous for its silk production, technology industry, and traditional tea culture.",CNZJ
+安徽,安徽,Anhui,Anhui.jpg,"Anhui, located in eastern China, is known for its natural beauty, including the Huangshan Mountains, and for its deep historical connections to Chinese philosophy and culture.",CNAH
+福建,福建,Fujian,Fujian.jpg,"Fujian is a coastal province known for its beautiful landscapes, including the Wuyi Mountains, and a strong tea culture. It has a rich history of maritime trade.",CNFJ
+江西,江西,Jiangxi,Jiangxi.jpg,"Jiangxi is home to lush mountains, pristine lakes, and historic sites like the ancient city of Nanchang. The province is also famous for its porcelain production.",CNJX
+山东,山东,Shandong,Shandong.jpg,"Shandong is known for its rich Confucian heritage, including the sacred Mount Tai, and for being the birthplace of Confucius. It's also an important economic hub.",CNSD
+河南,河南,Henan,Henan.jpg,"Henan, the birthplace of Chinese civilization, is home to the famous Shaolin Temple and the ancient capital city of Luoyang. The province is rich in history and culture.",CNHA
+湖北,湖北,Hubei,Hubei.jpg,"Hubei, located in central China, is known for its beautiful natural landscapes, such as the Three Gorges, and for its capital Wuhan, a major transportation and industrial hub.",CNHB
+湖南,湖南,Hunan,Hunan.jpg,"Hunan, famous for its spicy cuisine and rich cultural heritage, is home to the Zhangjiajie National Forest Park and the ancient city of Fenghuang.",CNHN
+广东,广东,Guangdong,Guangdong.jpg,"Guangzhou, formerly known as Canton, is a major port city and trading hub with over 2200 years of history. Known for Cantonese cuisine and culture, it's a dynamic metropolis with impressive skylines and historical sites.",CNGD
+广西,广西,Guangxi,Guangxi.jpg,"Guangxi is famous for its stunning karst landscapes, including the city of Guilin. It also has a rich cultural heritage and is home to many ethnic minority groups.",CNGX
+海南,海南,Hainan,Hainan.jpg,"Hainan, China's southernmost province, is known for its tropical climate, beautiful beaches, and as a popular tourist destination for luxury resorts and natural landscapes.",CNHI
+重庆,重庆,Chongqing,Chongqing.jpg,"Chongqing, a mountain city nestled at the confluence of the Yangtze and Jialing Rivers, is known for its hot pot cuisine, fog-shrouded skyline, and dramatic landscape of mountains and rivers. It serves as a gateway to the Three Gorges.",CNCQ
+四川,四川,Sichuan,Sichuan.jpg,"Sichuan, famous for its spicy cuisine and beautiful landscapes, is home to the giant panda breeding centers and the ancient Leshan Giant Buddha.",CNSC
+贵州,贵州,Guizhou,Guizhou.jpg,"Guizhou is known for its stunning natural beauty, including the Huangguoshu Waterfall, and its diverse ethnic cultures. The province is also famous for its unique Miao and Dong minorities.",CNGZ
+云南,云南,Yunnan,Yunnan.jpg,"Yunnan is known for its rich biodiversity, stunning landscapes, and vibrant minority cultures. It's home to places like Shangri-La and the famous Stone Forest.",CNYN
+西藏,西藏,Tibet,Tibet.jpg,"Lhasa, the capital of Tibet, sits at an altitude of 3,656 meters. Home to the magnificent Potala Palace and numerous Buddhist temples, it's a spiritual center with breathtaking mountain landscapes.",CNXZ
+陕西,陕西,Shaanxi,Shaanxi.jpg,"Shaanxi, home to the ancient capital Xi'an, is famous for the Terracotta Army and its deep historical significance as the starting point of the Silk Road.",CNSN
+甘肃,甘肃,Gansu,Gansu.jpg,"Gansu is known for its diverse landscape, including the Dunhuang Mogao Caves and the Yellow River. It's a major crossroads of China’s ancient trade routes.",CNGS
+青海,青海,Qinghai,Qinghai.jpg,"Qinghai, located on the Tibetan Plateau, is known for its vast, untouched landscapes, including Qinghai Lake, and a unique culture blending Tibetan and Han influences.",CNQH
+宁夏,宁夏,Ningxia,Ningxia.jpg,"Ningxia, an autonomous region for the Hui people, is known for its natural beauty, deserts, and wine production. The region has a rich cultural history.",CNNX
+新疆,新疆,Xinjiang,Xinjiang.jpg,"Xinjiang, the largest province in China, is known for its vast deserts, ancient Silk Road cities like Kashgar, and diverse ethnic groups, particularly the Uyghurs.",CNXJ
+台湾,台湾,Taiwan,Taiwan.jpg,"Taiwan, an island province of China, is known for its beautiful landscapes, bustling cities like Taipei, and a rich cultural heritage that blends traditional Chinese and indigenous influences.",CNTW
+香港,香港,Hong Kong,Hong kong.jpg,"Hong Kong is a major global financial center, known for its skyline, harbor, and vibrant fusion of Eastern and Western cultures.",CNHK
+澳门,澳门,Macau,Macao.jpg,"Macau, a special administrative region, is famous for its casinos, Portuguese colonial architecture, and rich cultural heritage.",CNMO
