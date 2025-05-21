@@ -471,7 +471,7 @@ def calculate_top_destinations(province_scores):
 
         # 加载省份数据，用于获取英文名称
         province_data_path = os.path.join('static', 'assets', 'province_data.csv')
-        province_df = pd.read_csv(province_data_path, encoding='utf-8')
+        province_df = pd.read_csv(province_data_path, encoding='GBK')
 
         # 创建中文名称到英文名称的映射
         name_to_english = {}
