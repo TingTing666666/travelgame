@@ -6,12 +6,15 @@ import numpy as np
 import os
 import pickle
 import base64
+import requests
 
 app = Flask(__name__)
 app.secret_key = 'dev-secret-key-for-testing'
 app.config['SESSION_COOKIE_SECURE'] = False  # 开发环境设为False
 app.config['SESSION_COOKIE_HTTPONLY'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = 3600  # 会话持续时间（秒）
+DEEPSEEK_API_KEY = "sk-4f5b261cc33c4cc78044dccaa6f13356"  # Replace with your actual API key
+DEEPSEEK_API_URL = "https://api.deepseek.com/v1/chat/completions"
 
 @app.route('/debug_routes')
 def debug_routes():
@@ -906,6 +909,87 @@ def get_attractions():
         import traceback
         traceback.print_exc()
         return jsonify({'error': 'Failed to retrieve attractions'}), 500
+
+
+@app.route('/ai-chat')
+def ai_chat():
+    """AI Chat page"""
+    # Get user preferences from session if available
+    preferences = session.get('preferences', {})
+    name = session.get('name', 'Traveler')
+
+    return render_template('ai_chat.html',
+                           preferences=preferences,
+                           name=name)
+
+
+@app.route('/api/chat', methods=['POST'])
+def chat_with_ai():
+    """Handle AI chat requests"""
+    try:
+        data = request.json
+        user_message = data.get('message', '')
+        include_preferences = data.get('include_preferences', False)
+
+        # Build the message for AI
+        messages = [
+            {
+                "role": "system",
+                "content": "You are a helpful travel assistant. Provide personalized travel advice and recommendations based on user preferences. Keep responses conversational and helpful."
+            }
+        ]
+
+        # Add preferences context if requested
+        if include_preferences and 'preferences' in session:
+            preferences = session['preferences']
+            preferences_text = f"User's travel preferences: "
+            for category, selections in preferences.items():
+                if selections:
+                    preferences_text += f"{category.replace('_', ' ').title()}: {', '.join(selections)}. "
+
+            messages.append({
+                "role": "system",
+                "content": f"{preferences_text} Please provide advice based on these preferences."
+            })
+
+        messages.append({
+            "role": "user",
+            "content": user_message
+        })
+
+        # Call DeepSeek API
+        headers = {
+            "Authorization": f"Bearer {DEEPSEEK_API_KEY}",
+            "Content-Type": "application/json"
+        }
+
+        payload = {
+            "model": "deepseek-chat",
+            "messages": messages,
+            "max_tokens": 1000,
+            "temperature": 0.7
+        }
+
+        response = requests.post(DEEPSEEK_API_URL, json=payload, headers=headers)
+
+        if response.status_code == 200:
+            ai_response = response.json()
+            message = ai_response['choices'][0]['message']['content']
+            return jsonify({
+                "success": True,
+                "message": message
+            })
+        else:
+            return jsonify({
+                "success": False,
+                "error": f"API Error: {response.status_code}"
+            }), 500
+
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
