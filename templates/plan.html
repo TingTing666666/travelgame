@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan Your Trip - TravelPal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/plan.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: 'dc616d1831ce581c626e046ec0339d8c',
+        }
+    </script>
+    <script type="text/javascript"
+            src="https://webapi.amap.com/maps?v=2.0&key=44082ab5734597b1955f2796ef4ff1b2&plugin=AMap.Geocoder"></script>
+</head>
+<body>
+<header>
+    <nav>
+        <div class="logo">TravelPal</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('destinations') }}">Destinations</a></li>
+            <li><a href="{{ url_for('create_avatar') }}">Create Avatar</a></li>
+            <li><a href="{{ url_for('plan') }}" class="active">Plan Trip</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="page-title">
+        <h1>Plan Your Perfect Trip</h1>
+        <p>Create a personalized itinerary for an unforgettable journey</p>
+    </div>
+
+    <div class="plan-layout">
+        <!-- Left Column - Trip Information -->
+        <div class="trip-params-section">
+            <div class="ios-card">
+                <h2>Trip Information</h2>
+
+                <!-- Trip Name - Full Width -->
+                <div class="param-group full-width">
+                    <label for="trip-name">Trip Name</label>
+                    <input type="text" id="trip-name" class="ios-input" placeholder="e.g., My China Adventure">
+                </div>
+
+                <!-- Date Range - Two Columns -->
+                <div class="param-row">
+                    <div class="param-group">
+                        <label for="start-date">Start Date</label>
+                        <input type="date" id="start-date" class="ios-input">
+                    </div>
+                    <div class="param-group">
+                        <label for="end-date">End Date</label>
+                        <input type="date" id="end-date" class="ios-input">
+                    </div>
+                </div>
+
+                <!-- Travelers and Budget - Two Columns -->
+                <div class="param-row">
+                    <div class="param-group">
+                        <label for="travelers">Travelers</label>
+                        <select id="travelers" class="ios-select">
+                            <option value="1">1 person</option>
+                            <option value="2" selected>2 people</option>
+                            <option value="3">3 people</option>
+                            <option value="4">4 people</option>
+                            <option value="5">5 people</option>
+                            <option value="6+">6+ people</option>
+                        </select>
+                    </div>
+                    <div class="param-group">
+                        <label for="budget">Budget (¥)</label>
+                        <input type="number" id="budget" class="ios-input" placeholder="Total budget">
+                    </div>
+                </div>
+
+                <!-- Province Selection - Full Width -->
+                <div class="param-group full-width">
+                    <label for="province-select">Select Province</label>
+                    <select id="province-select" class="ios-select">
+                        <option value="">Choose a province...</option>
+                        {% for destination in recommended_destinations %}
+                            <option value="{{ destination.province_id }}">{{ destination.english_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Auto Generate Button -->
+                <div class="param-group full-width">
+                    <button class="ios-button" id="auto-generate-btn">Auto Generate Itinerary</button>
+                </div>
+            </div>
+
+            <div class="ios-card attraction-selection" id="attraction-selection">
+                <h2>Attractions</h2>
+
+                <!-- Province and Type Filters -->
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="filter-province">Province</label>
+                        <select id="filter-province" class="ios-select">
+                            <option value="">All Provinces</option>
+                            {% for destination in recommended_destinations %}
+                                <option value="{{ destination.province_id }}">{{ destination.english_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-type">Type</label>
+                        <select id="filter-type" class="ios-select">
+                            <option value="all">All Types</option>
+                            <option value="play">Sightseeing</option>
+                            <option value="food">Dining</option>
+                            <option value="stay">Accommodation</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="filter-people">People</label>
+                        <select id="filter-people" class="ios-select">
+                            <option value="">Any</option>
+                            <option value="2">2 people</option>
+                            <option value="3">3 people</option>
+                            <option value="4">4+ people</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="filter-budget">Budget (¥)</label>
+                        <select id="filter-budget" class="ios-select">
+                            <option value="">Any</option>
+                            <option value="0-50">0-50</option>
+                            <option value="50-100">50-100</option>
+                            <option value="100-200">100-200</option>
+                            <option value="200+">200+</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="attractions-container" id="attractions-container">
+                    <!-- Attractions will be added here dynamically -->
+                    <div class="empty-state">Select filters to view available attractions</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Middle Column - Budget & Itinerary -->
+        <div class="itinerary-section">
+            <!-- Budget Summary at Top -->
+            <div class="ios-card budget-summary">
+                <h3>Budget Summary</h3>
+                <div class="budget-progress">
+                    <div class="budget-bar" id="budget-bar" style="width: 0%;"></div>
+                </div>
+                <div class="budget-details">
+                    <span>Used: <span class="budget-amount" id="used-budget">¥0</span></span>
+                    <span>Total: <span class="budget-amount" id="total-budget">¥0</span></span>
+                </div>
+                <div id="budget-breakdown" class="budget-breakdown">
+                    <!-- Budget breakdown will be added here dynamically -->
+                </div>
+            </div>
+
+            <div class="ios-card">
+                <h2>Itinerary</h2>
+
+                <div class="map-container" id="map-container">
+                    <div id="map-search-container">
+                        <input type="text" id="map-search" class="map-search-input" placeholder="Search location...">
+                        <button id="search-btn" class="map-search-btn">Search</button>
+                    </div>
+                    <div id="real-map" style="width: 100%; height: 180px;"></div>
+                </div>
+
+                <!-- Scrollable Day Tabs -->
+                <div class="itinerary-days-wrapper">
+                    <div class="itinerary-days" id="days-tabs">
+                        <!-- Day tabs will be added here dynamically -->
+                    </div>
+                </div>
+
+                <div class="day-contents" id="day-contents">
+                    <!-- Day content will be added here dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Add Activity Form -->
+        <div class="activity-form-section">
+            <div class="ios-card add-activity">
+                <h3>Add Activity</h3>
+                <div class="activity-form">
+                    <div class="form-group">
+                        <label for="activity-name">Activity Name</label>
+                        <input type="text" id="activity-name" class="ios-input" placeholder="Activity name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="activity-time">Time Range</label>
+                        <input type="text" id="activity-time" class="ios-input" placeholder="e.g., 09:00 - 11:00">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="activity-location">Location</label>
+                        <input type="text" id="activity-location" class="ios-input" placeholder="Activity location">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="activity-cost">Cost (¥)</label>
+                        <input type="number" id="activity-cost" class="ios-input" placeholder="Budget">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="activity-type">Type</label>
+                        <select id="activity-type" class="ios-select">
+                            <option value="play">Sightseeing</option>
+                            <option value="food">Dining</option>
+                            <option value="stay">Accommodation</option>
+                            <option value="transport">Transportation</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="activity-notes">Notes</label>
+                        <textarea id="activity-notes" class="ios-input" placeholder="Add notes..." rows="3"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="ios-button secondary" id="cancel-activity">Cancel</button>
+                        <button class="ios-button" id="add-activity-btn">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="ios-button" id="generate-plan-btn">Generate Plan</button>
+                <button class="ios-button" id="save-plan-btn">Save Plan</button>
+                <button class="ios-button secondary" id="share-plan-btn">Share Plan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-message" id="toast-message"></div>
+
+<script src="{{ url_for('static', filename='js/plan.js') }}"></script>
+</body>
+</html>

@@ -11,15 +11,15 @@
 </head>
 <body>
 <header>
-<nav>
-    <div class="logo">TravelPal</div>
-    <ul class="nav-links">
-        <li><a href="{{ url_for('home') }}">Home</a></li>
-        <li><a href="{{ url_for('destinations') }}">Destinations</a></li>
-        <li><a href="{{ url_for('create_avatar') }}">Create Avatar</a></li>
-        <li><a href="{{ url_for('results') }}">Results</a></li>
-    </ul>
-</nav>
+    <nav>
+        <div class="logo">TravelPal</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('destinations') }}">Destinations</a></li>
+            <li><a href="{{ url_for('create_avatar') }}">Create Avatar</a></li>
+            <li><a href="{{ url_for('results') }}">Results</a></li>
+        </ul>
+    </nav>
 </header>
 
 <div class="container">
@@ -150,7 +150,8 @@
         <h2>Ready to Explore {{ province.english_name }}?</h2>
         <p>Create your personalized travel plan now</p>
         <div class="cta-buttons">
-            <a href="#" class="cta-button primary">Plan My Trip</a>
+            <a href="{{ url_for('plan', province_id=province.id, name=province.english_name) }}"
+               class="cta-button primary">Plan My Trip</a>
             <a href="{{ url_for('results') }}" class="cta-button secondary">View Other Destinations</a>
         </div>
     </section>
@@ -162,7 +163,15 @@
         <p>&copy; 2025 TravelPal. All rights reserved.</p>
     </div>
 </footer>
-
+<script>
+    // Update the "Plan My Trip" button in the existing content
+    document.querySelectorAll('.cta-button.primary').forEach(button => {
+        if (button.textContent.trim() === 'Plan My Trip') {
+            // Update href to include province parameters
+            button.href = "{{ url_for('plan', province_id=province.id, name=province.english_name) }}";
+        }
+    });
+</script>
 <script>
     // Store the province map data from backend
     const provinceMapData = {{ map_data|safe if map_data else 'null' }};

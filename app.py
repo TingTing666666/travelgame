@@ -823,5 +823,89 @@ def destinations():
         traceback.print_exc()
         return redirect(url_for('home'))
 
+
+@app.route('/plan')
+def plan():
+    """Travel planning page"""
+    try:
+        import pandas as pd
+        import os
+
+        # 加载省份数据，获取所有34个省份
+        province_data_path = os.path.join('static', 'assets', 'province_data.csv')
+        province_df = pd.read_csv(province_data_path, encoding='GBK')
+
+        # 创建所有省份的列表，按英文名称排序
+        all_provinces = []
+        for _, row in province_df.iterrows():
+            all_provinces.append({
+                'province_id': row['id'],  # 中文省份名
+                'english_name': row['english_name'],  # 英文省份名
+                'chinese_name': row['name']  # 中文显示名
+            })
+
+        # 按英文名称排序
+        all_provinces.sort(key=lambda x: x['english_name'])
+
+        return render_template(
+            'plan.html',
+            recommended_destinations=all_provinces  # 传递所有省份而不是推荐的6个
+        )
+
+    except Exception as e:
+        print(f"Error rendering plan page: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return redirect(url_for('home'))
+
+
+@app.route('/api/attractions')
+def get_attractions():
+    """API endpoint to retrieve attractions for a province"""
+    try:
+        import pandas as pd
+        import os
+
+        province_id = request.args.get('province_id')
+        if not province_id:
+            return jsonify({'error': 'Missing province_id parameter'}), 400
+
+        # Load attractions data from CSV
+        csv_path = os.path.join('static', 'assets', 'plan_data.csv')
+        try:
+            df = pd.read_csv(csv_path, encoding='gbk')
+        except UnicodeDecodeError:
+            # If GBK fails, try other encodings
+            df = pd.read_csv(csv_path, encoding='iso-8859-1')
+
+        # Filter attractions for this province
+        province_attractions = df[df['province_id'] == province_id]
+
+        if province_attractions.empty:
+            return jsonify([]), 200
+
+        # Convert to list of dictionaries
+        result = []
+        for _, row in province_attractions.iterrows():
+            attraction = {
+                'id': f"{row['province_id']}-{row['english_name']}",
+                'province_id': row['province_id'],
+                'attraction_name': row['attraction_name'],
+                'english_name': row['english_name'],
+                'people': int(row['people']),
+                'budget': int(row['budget']),
+                'time': float(row['time']),
+                'type': row['type'],
+            }
+            result.append(attraction)
+
+        return jsonify(result), 200
+
+    except Exception as e:
+        print(f"Error fetching attractions: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'Failed to retrieve attractions'}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
