@@ -5,44 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Destinations - TravelPal</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/destinations.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">CN TravelPal</div>
-            <ul class="nav-links">
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                <li><a href="{{ url_for('destinations') }}" class="active">Destinations</a></li>
-                <li><a href="{{ url_for('create_avatar') }}">Create Avatar</a>
-                <li><a href="{{ url_for('plan') }}">Plan Trip</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<header>
+    <nav>
+        <div class="logo">CN TravelPal</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('destinations') }}" class="active">Destinations</a></li>
+            <li><a href="{{ url_for('create_avatar') }}">Create Avatar</a>
+            <li><a href="{{ url_for('plan') }}">Plan Trip</a></li>
+            <li><a href="{{ url_for('ai_chat') }}">AI Assistant</a></li>
+        </ul>
+    </nav>
+</header>
 
-    <div class="container">
-        <section class="hero-section">
-            <h1>Explore China's Diverse Destinations</h1>
-            <p>Discover the perfect location for your next adventure</p>
-        </section>
+<div class="container">
+    <section class="hero-section">
+        <h1>Explore China's Diverse Destinations</h1>
+        <p>Discover the perfect location for your next adventure</p>
+    </section>
 
-        <section class="filter-section">
-            <h2>Filter Destinations</h2>
-            <div class="tags-container">
-                <button class="tag-btn active" data-tag="all">All</button>
-                {% for tag in all_tags %}
+    <section class="filter-section">
+        <h2>Filter Destinations</h2>
+        <div class="tags-container">
+            <button class="tag-btn active" data-tag="all">All</button>
+            {% for tag in all_tags %}
                 <button class="tag-btn" data-tag="{{ tag_to_id[tag] }}">{{ tag }}</button>
-                {% endfor %}
-            </div>
-        </section>
+            {% endfor %}
+        </div>
+    </section>
 
-        <section class="destinations-section">
-            <div class="destinations-grid">
-                {% for destination in destinations %}
+    <section class="destinations-section">
+        <div class="destinations-grid">
+            {% for destination in destinations %}
                 <div class="destination-card" data-tags="{{ destination.tag_ids|join(' ') }}">
                     <div class="destination-image">
-                        <img src="{{ url_for('static', filename=destination.image.replace('static/', '')) }}" alt="{{ destination.name }}">
+                        <img src="{{ url_for('static', filename=destination.image.replace('static/', '')) }}"
+                             alt="{{ destination.name }}">
                     </div>
                     <div class="destination-content">
                         <h3>{{ destination.name }}</h3>
@@ -50,142 +52,143 @@
                         <p class="description">{{ destination.description }}</p>
                         <div class="destination-tags">
                             {% for tag in destination.tags[:3] %}
-                            <span class="tag">{{ tag }}</span>
+                                <span class="tag">{{ tag }}</span>
                             {% endfor %}
                             {% if destination.tags|length > 3 %}
-                            <span class="tag more">+{{ destination.tags|length - 3 }}</span>
+                                <span class="tag more">+{{ destination.tags|length - 3 }}</span>
                             {% endif %}
                         </div>
-                        <a href="{{ url_for('province_detail', province_name=destination.english_name) }}" class="explore-btn">Explore</a>
+                        <a href="{{ url_for('province_detail', province_name=destination.english_name) }}"
+                           class="explore-btn">Explore</a>
                     </div>
                 </div>
-                {% endfor %}
-            </div>
-        </section>
-    </div>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-logo">TravelPal</div>
-            <p>&copy; 2025 TravelPal. All rights reserved.</p>
+            {% endfor %}
         </div>
-    </footer>
+    </section>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("页面加载完成，初始化筛选器...");
+<footer>
+    <div class="footer-content">
+        <div class="footer-logo">TravelPal</div>
+        <p>&copy; 2025 TravelPal. All rights reserved.</p>
+    </div>
+</footer>
 
-            // 标签筛选功能
-            const tagButtons = document.querySelectorAll('.tag-btn');
-            const destinationCards = document.querySelectorAll('.destination-card');
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log("页面加载完成，初始化筛选器...");
 
-            // 调试信息 - 输出所有标签按钮
-            console.log("标签按钮:");
-            tagButtons.forEach(btn => {
-                console.log(btn.textContent + ":", btn.getAttribute('data-tag'));
-            });
+        // 标签筛选功能
+        const tagButtons = document.querySelectorAll('.tag-btn');
+        const destinationCards = document.querySelectorAll('.destination-card');
 
-            // 调试信息 - 输出所有目的地卡片的标签
-            console.log("目的地卡片标签:");
-            destinationCards.forEach(card => {
-                const title = card.querySelector('h3') ? card.querySelector('h3').textContent : 'Unknown';
-                console.log(title + ":", card.getAttribute('data-tags'));
-            });
+        // 调试信息 - 输出所有标签按钮
+        console.log("标签按钮:");
+        tagButtons.forEach(btn => {
+            console.log(btn.textContent + ":", btn.getAttribute('data-tag'));
+        });
 
-            tagButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const selectedTag = this.getAttribute('data-tag');
-                    console.log("选择的标签:", selectedTag, "文本:", this.textContent);
+        // 调试信息 - 输出所有目的地卡片的标签
+        console.log("目的地卡片标签:");
+        destinationCards.forEach(card => {
+            const title = card.querySelector('h3') ? card.querySelector('h3').textContent : 'Unknown';
+            console.log(title + ":", card.getAttribute('data-tags'));
+        });
 
-                    // 移除所有按钮的active类
-                    tagButtons.forEach(btn => btn.classList.remove('active'));
+        tagButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const selectedTag = this.getAttribute('data-tag');
+                console.log("选择的标签:", selectedTag, "文本:", this.textContent);
 
-                    // 给当前点击的按钮添加active类
-                    this.classList.add('active');
+                // 移除所有按钮的active类
+                tagButtons.forEach(btn => btn.classList.remove('active'));
 
-                    // 如果选择"全部"，显示所有目的地
-                    if (selectedTag === 'all') {
-                        console.log("显示所有目的地");
-                        destinationCards.forEach(card => {
-                            card.style.display = 'block';
-                            // 添加动画效果
-                            setTimeout(() => {
-                                card.style.opacity = '1';
-                                card.style.transform = 'translateY(0)';
-                            }, 10);
-                        });
-                        return;
-                    }
+                // 给当前点击的按钮添加active类
+                this.classList.add('active');
 
-                    // 否则，只显示包含所选标签的目的地
-                    let visibleCount = 0;
+                // 如果选择"全部"，显示所有目的地
+                if (selectedTag === 'all') {
+                    console.log("显示所有目的地");
                     destinationCards.forEach(card => {
-                        const tagsString = card.getAttribute('data-tags') || '';
-                        const cardTags = tagsString.split(' ').filter(tag => tag.trim().length > 0);
-                        const cardTitle = card.querySelector('h3') ? card.querySelector('h3').textContent : 'Unknown';
-
-                        console.log(`检查卡片 "${cardTitle}" 标签:`, cardTags, "是否包含", selectedTag);
-
-                        const hasTag = cardTags.includes(selectedTag);
-                        console.log(`卡片 "${cardTitle}" ${hasTag ? '匹配' : '不匹配'}`);
-
-                        if (hasTag) {
-                            visibleCount++;
-                            card.style.display = 'block';
-                            setTimeout(() => {
-                                card.style.opacity = '1';
-                                card.style.transform = 'translateY(0)';
-                            }, 10);
-                        } else {
-                            card.style.opacity = '0';
-                            card.style.transform = 'translateY(20px)';
-                            setTimeout(() => {
-                                card.style.display = 'none';
-                            }, 300);
-                        }
+                        card.style.display = 'block';
+                        // 添加动画效果
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 10);
                     });
-
-                    console.log(`筛选完成，显示了 ${visibleCount} 个目的地`);
-                });
-            });
-
-            // 鼠标悬停在目的地卡片上时显示完整标签
-            const destinationTags = document.querySelectorAll('.destination-tags');
-            destinationTags.forEach(tagsContainer => {
-                const moreTag = tagsContainer.querySelector('.more');
-                if (moreTag) {
-                    tagsContainer.addEventListener('mouseenter', function() {
-                        // 获取当前显示的标签
-                        const visibleTags = Array.from(this.querySelectorAll('.tag:not(.more)'))
-                            .map(tag => tag.textContent);
-
-                        // 获取所有标签
-                        const card = this.closest('.destination-card');
-                        const cardTitle = card.querySelector('h3').textContent;
-                        const allTagsElements = card.querySelectorAll('.destination-tags .tag:not(.more)');
-                        const allVisibleTags = Array.from(allTagsElements).map(el => el.textContent);
-
-                        // 从原始标签列表中找出完整的标签集
-                        // 注意：这里我们需要访问完整的目的地数据，但在客户端JavaScript中无法直接访问
-                        // 我们需要将这些数据存储在HTML中
-
-                        // 创建悬浮提示，显示"更多"标签
-                        const tooltip = document.createElement('div');
-                        tooltip.className = 'tags-tooltip';
-                        tooltip.innerHTML = `<p>+${moreTag.textContent.replace('+', '')} more tags</p>`;
-
-                        this.appendChild(tooltip);
-                    });
-
-                    tagsContainer.addEventListener('mouseleave', function() {
-                        const tooltip = this.querySelector('.tags-tooltip');
-                        if (tooltip) {
-                            tooltip.remove();
-                        }
-                    });
+                    return;
                 }
+
+                // 否则，只显示包含所选标签的目的地
+                let visibleCount = 0;
+                destinationCards.forEach(card => {
+                    const tagsString = card.getAttribute('data-tags') || '';
+                    const cardTags = tagsString.split(' ').filter(tag => tag.trim().length > 0);
+                    const cardTitle = card.querySelector('h3') ? card.querySelector('h3').textContent : 'Unknown';
+
+                    console.log(`检查卡片 "${cardTitle}" 标签:`, cardTags, "是否包含", selectedTag);
+
+                    const hasTag = cardTags.includes(selectedTag);
+                    console.log(`卡片 "${cardTitle}" ${hasTag ? '匹配' : '不匹配'}`);
+
+                    if (hasTag) {
+                        visibleCount++;
+                        card.style.display = 'block';
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, 10);
+                    } else {
+                        card.style.opacity = '0';
+                        card.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            card.style.display = 'none';
+                        }, 300);
+                    }
+                });
+
+                console.log(`筛选完成，显示了 ${visibleCount} 个目的地`);
             });
         });
-    </script>
+
+        // 鼠标悬停在目的地卡片上时显示完整标签
+        const destinationTags = document.querySelectorAll('.destination-tags');
+        destinationTags.forEach(tagsContainer => {
+            const moreTag = tagsContainer.querySelector('.more');
+            if (moreTag) {
+                tagsContainer.addEventListener('mouseenter', function () {
+                    // 获取当前显示的标签
+                    const visibleTags = Array.from(this.querySelectorAll('.tag:not(.more)'))
+                        .map(tag => tag.textContent);
+
+                    // 获取所有标签
+                    const card = this.closest('.destination-card');
+                    const cardTitle = card.querySelector('h3').textContent;
+                    const allTagsElements = card.querySelectorAll('.destination-tags .tag:not(.more)');
+                    const allVisibleTags = Array.from(allTagsElements).map(el => el.textContent);
+
+                    // 从原始标签列表中找出完整的标签集
+                    // 注意：这里我们需要访问完整的目的地数据，但在客户端JavaScript中无法直接访问
+                    // 我们需要将这些数据存储在HTML中
+
+                    // 创建悬浮提示，显示"更多"标签
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'tags-tooltip';
+                    tooltip.innerHTML = `<p>+${moreTag.textContent.replace('+', '')} more tags</p>`;
+
+                    this.appendChild(tooltip);
+                });
+
+                tagsContainer.addEventListener('mouseleave', function () {
+                    const tooltip = this.querySelector('.tags-tooltip');
+                    if (tooltip) {
+                        tooltip.remove();
+                    }
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>

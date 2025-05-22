@@ -35,25 +35,28 @@
 <section class="features">
     <div class="feature">
         <div class="feature-icon">
-            <img src="{{ url_for('static', filename='images/travel-icons/avatar.svg') }}" alt="Avatar">
+            <img src="{{ url_for('static', filename='images/travel-icons/destination.svg') }}" alt="Avatar">
         </div>
-        <h3>Create Your Traveler</h3>
-        <p>Customize your virtual travel companion to reflect your personal style</p>
+        <h3>See all destinations</h3>
+        <p>Look for the Chinese provinces that you will fall in love with at first sight</p>
+        <a href="{{ url_for('destinations') }}" class="ios-button">Create Avatar</a>
     </div>
     <div class="feature">
         <div class="feature-icon">
-            <img src="{{ url_for('static', filename='images/travel-icons/preferences.svg') }}" alt="Preferences">
+            <img src="{{ url_for('static', filename='images/travel-icons/aiindex.svg') }}" alt="Preferences">
         </div>
         <h3>Share Your Preferences</h3>
-        <p>Tell us what matters most to you when exploring new destinations</p>
+        <p>Tell our ai what matters most to you when exploring new destinations</p>
+        <a href="{{ url_for('ai_chat') }}" class="ios-button">AI Assistant</a>
     </div>
     <div class="feature">
         <div class="feature-icon">
-            <img src="{{ url_for('static', filename='images/travel-icons/recommendations.svg') }}"
+            <img src="{{ url_for('static', filename='images/travel-icons/plan.svg') }}"
                  alt="Recommendations">
         </div>
-        <h3>Get Personalized Recommendations</h3>
-        <p>Discover destinations and experiences perfectly matched to your tastes</p>
+        <h3>Get Personalized Plan</h3>
+        <p>Find the most suitable plan with the support of recommendations</p>
+        <a href="{{ url_for('plan') }}" class="ios-button">Plan Trip</a>
     </div>
 </section>
 

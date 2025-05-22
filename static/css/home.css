@@ -391,3 +391,39 @@ footer p {
     transform: translateY(-1px);
     box-shadow: 0 3px 8px rgba(29, 226, 154, 0.2);
 }
+
+/* iOS style button styles */
+.ios-button {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #fff;
+    color: #333;
+    border: 2px solid #333;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(51, 51, 51, 0.1);
+    margin-top: 15px;
+}
+
+.ios-button:hover {
+    background-color: #333;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(51, 51, 51, 0.2);
+    text-decoration: none;
+}
+
+.ios-button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(51, 51, 51, 0.2);
+}
+
+@media (max-width: 768px) {
+    .ios-button {
+        padding: 10px 24px;
+        font-size: 14px;
+    }
+}
