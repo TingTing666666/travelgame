@@ -86,7 +86,7 @@
                 </div>
                 <h3>Get Detailed Itinerary</h3>
                 <p>Request a personalized day-by-day travel plan for any destination</p>
-                <a href="#" class="action-btn">Plan My Trip</a>
+                <a href="{{ url_for('plan') }}" class="action-btn">Plan My Trip</a>
             </div>
 
             <div class="next-step-card">
@@ -95,7 +95,7 @@
                 </div>
                 <h3>Find Best Deals</h3>
                 <p>Discover flights, accommodations, and experiences at unbeatable prices</p>
-                <a href="#" class="action-btn">Search Deals</a>
+                <a href="{{ url_for('destinations') }}" class="action-btn">Search Deals</a>
             </div>
 
             <div class="next-step-card">
@@ -104,7 +104,7 @@
                 </div>
                 <h3>Share Your Results</h3>
                 <p>Get input from friends and family by sharing your recommended destinations</p>
-                <a href="#" class="action-btn">Share Now</a>
+                <a href="{{ url_for('ai_chat') }}" class="action-btn">Share Now</a>
             </div>
         </div>
     </section>
