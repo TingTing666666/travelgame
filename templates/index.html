@@ -9,6 +9,50 @@
           rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Arizonia&display=swap" rel="stylesheet">
 </head>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const slides = document.querySelectorAll('.carousel-slide');
+    const indicators = document.querySelectorAll('.indicator');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentSlide = 0;
+    const totalSlides = slides.length;
+
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
+
+        slides[index].classList.add('active');
+        indicators[index].classList.add('active');
+    }
+
+    function nextSlide() {
+        currentSlide = (currentSlide + 1) % totalSlides;
+        showSlide(currentSlide);
+    }
+
+    function prevSlide() {
+        currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+        showSlide(currentSlide);
+    }
+
+    // 按钮事件
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+
+    // 指示器事件
+    indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+            currentSlide = index;
+            showSlide(currentSlide);
+        });
+    });
+
+    // 自动轮播
+    setInterval(nextSlide, 3000);
+});
+</script>
 <body>
 <header>
     <nav>
@@ -24,6 +68,57 @@
 </header>
 
 <section class="hero">
+    <div class="hero-carousel">
+        <div class="carousel-container">
+            <div class="carousel-slides">
+                <div class="carousel-slide active" style="background-image: url('{{ url_for('static', filename='images/destinations/Chongqing.jpg') }}');">
+                    <div class="slide-overlay"></div>
+                </div>
+                <div class="carousel-slide" style="background-image: url('{{ url_for('static', filename='images/destinations/Fujian.jpg') }}');">
+                    <div class="slide-overlay"></div>
+                </div>
+                <div class="carousel-slide" style="background-image: url('{{ url_for('static', filename='images/destinations/Guizhou.jpg') }}');">
+                    <div class="slide-overlay"></div>
+                </div>
+                <div class="carousel-slide" style="background-image: url('{{ url_for('static', filename='images/destinations/Hubei.jpg') }}');">
+                    <div class="slide-overlay"></div>
+                </div>
+                <div class="carousel-slide" style="background-image: url('{{ url_for('static', filename='images/destinations/Inner Mongolia.jpg') }}');">
+                    <div class="slide-overlay"></div>
+                </div>
+                <div class="carousel-slide" style="background-image: url('{{ url_for('static', filename='images/destinations/Jiangxi.jpg') }}');">
+                    <div class="slide-overlay"></div>
+                </div>
+                <div class="carousel-slide" style="background-image: url('{{ url_for('static', filename='images/destinations/Macao.jpg') }}');">
+                    <div class="slide-overlay"></div>
+                </div>
+            </div>
+
+            <!-- 导航按钮 -->
+            <button class="carousel-btn prev-btn" id="prevBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15,18 9,12 15,6"></polyline>
+                </svg>
+            </button>
+            <button class="carousel-btn next-btn" id="nextBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="9,18 15,12 9,6"></polyline>
+                </svg>
+            </button>
+
+            <!-- 指示器 -->
+            <div class="carousel-indicators">
+                <button class="indicator active" data-slide="0"></button>
+                <button class="indicator" data-slide="1"></button>
+                <button class="indicator" data-slide="2"></button>
+                <button class="indicator" data-slide="3"></button>
+                <button class="indicator" data-slide="4"></button>
+                <button class="indicator" data-slide="5"></button>
+                <button class="indicator" data-slide="6"></button>
+            </div>
+        </div>
+    </div>
+
     <div class="hero-content">
         <h1>Discover Your Perfect</h1>
         <h11>Journey</h11>
