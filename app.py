@@ -130,7 +130,7 @@ def questionnaire():
         'activities': ['Food & Cuisine', 'Sports & Activities', 'Sightseeing', 'Shopping', 'History & Culture'],
         'transportation': ['Drive', 'Walk', 'Public Transit', 'Bicycle', 'Guided Tour'],
         'accommodation': ['Hostel', 'Homestay', 'Hotel', 'Resort', 'Camping'],
-        'budget': ['$0-$5000', '$5000-$10000', '$10000-$50000', '$50000+'],
+        'budget': ['0-5000', '5000-10000', '10000-50000', '50000+'],
         'duration': ['1 day', '3 days', '7 days', '14 days', '30+ days']
     }
 
