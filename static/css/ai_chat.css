@@ -59,7 +59,7 @@ nav {
 
 /* Chat Container */
 .chat-container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 100px auto 0;
     height: calc(100vh - 120px);
     background: white;

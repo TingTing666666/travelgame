@@ -194,6 +194,24 @@
                 </div>
             </div>
         </div>
+                <div class="destination">
+            <div class="destination-image">
+                <img src="{{ url_for('static', filename='images/destinations/Shanghai.jpg') }}" alt="Shanghai">
+                <div class="destination-overlay">
+                    <h3>Shanghai</h3>
+                    <a href="{{ url_for('province_detail', province_name='Shanghai') }}" class="destination-link">Explore</a>
+                </div>
+            </div>
+        </div>
+        <div class="destination">
+            <div class="destination-image">
+                <img src="{{ url_for('static', filename='images/destinations/Beijing.jpg') }}" alt="Beijing">
+                <div class="destination-overlay">
+                    <h3>Beijing</h3>
+                    <a href="{{ url_for('province_detail', province_name='Beijing') }}" class="destination-link">Explore</a>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="see-all-container">
         <a href="{{ url_for('destinations') }}" class="see-all-btn">See All Destinations</a>
